@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "lineage-server"
+version = "0.1.0"
+requires-python = ">=3.10"
+dependencies = [
+    "fastmcp", 
+    "sqlglot", 
+    "prometheus-client>=0.20.0",
+    "mcp-observatory-sdk>=1.0.0",
+    "langfuse>=2.0.0"
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0.0", "pytest-asyncio>=0.23.0"]
+
+[project.scripts]
+lineage-server = "lineage_server.main:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"

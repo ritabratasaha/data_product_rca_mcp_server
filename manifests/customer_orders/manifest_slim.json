@@ -1,0 +1,974 @@
+{
+  "nodes": {
+    "model.customer_orders.customer_base": {
+      "unique_id": "model.customer_orders.customer_base",
+      "name": "customer_base",
+      "resource_type": "model",
+      "database": "customer_orders",
+      "schema": "staging",
+      "relation_name": "customer_orders.staging.customer_base",
+      "columns": {
+        "c_custkey": {
+          "name": "c_custkey",
+          "data_type": null
+        },
+        "c_name": {
+          "name": "c_name",
+          "data_type": null
+        },
+        "c_address": {
+          "name": "c_address",
+          "data_type": null
+        },
+        "c_nationkey": {
+          "name": "c_nationkey",
+          "data_type": null
+        },
+        "c_phone": {
+          "name": "c_phone",
+          "data_type": null
+        },
+        "c_accbal": {
+          "name": "c_accbal",
+          "data_type": null
+        },
+        "c_mktsegment": {
+          "name": "c_mktsegment",
+          "data_type": null
+        },
+        "c_comment": {
+          "name": "c_comment",
+          "data_type": null
+        }
+      },
+      "depends_on": {
+        "macros": [],
+        "nodes": [
+          "source.customer_orders.snowflake_sample_data.customer"
+        ]
+      },
+      "refs": [],
+      "sources": [
+        [
+          "snowflake_sample_data",
+          "customer"
+        ]
+      ],
+      "raw_code": "-- Staging model for customer data\nwith source_cust as (\n    select \n        *\n    from {{ source('snowflake_sample_data','customer')}}\n\n)\nselect * from source_cust",
+      "compiled_code": "-- Staging model for customer data\nwith source_cust as (\n    select \n        *\n    from snowflake_sample_data.tpch_sf1.customer\n\n)\nselect * from source_cust"
+    },
+    "model.customer_orders.order_base": {
+      "unique_id": "model.customer_orders.order_base",
+      "name": "order_base",
+      "resource_type": "model",
+      "database": "customer_orders",
+      "schema": "staging",
+      "relation_name": "customer_orders.staging.order_base",
+      "columns": {
+        "o_orderkey": {
+          "name": "o_orderkey",
+          "data_type": null
+        },
+        "o_custkey": {
+          "name": "o_custkey",
+          "data_type": null
+        },
+        "o_orderstatus": {
+          "name": "o_orderstatus",
+          "data_type": null
+        },
+        "o_totalprice": {
+          "name": "o_totalprice",
+          "data_type": null
+        },
+        "o_orderdate": {
+          "name": "o_orderdate",
+          "data_type": null
+        },
+        "o_orderpriority": {
+          "name": "o_orderpriority",
+          "data_type": null
+        },
+        "o_clerk": {
+          "name": "o_clerk",
+          "data_type": null
+        },
+        "o_shippriority": {
+          "name": "o_shippriority",
+          "data_type": null
+        },
+        "o_comment": {
+          "name": "o_comment",
+          "data_type": null
+        }
+      },
+      "depends_on": {
+        "macros": [],
+        "nodes": [
+          "source.customer_orders.snowflake_sample_data.orders"
+        ]
+      },
+      "refs": [],
+      "sources": [
+        [
+          "snowflake_sample_data",
+          "orders"
+        ]
+      ],
+      "raw_code": "-- Staging model for order  data\nwith source_orders as (\n    select \n        *\n    from {{ source('snowflake_sample_data','orders')}}\n\n)\nselect * from source_orders",
+      "compiled_code": "-- Staging model for order  data\nwith source_orders as (\n    select \n        *\n    from snowflake_sample_data.tpch_sf1.orders\n\n)\nselect * from source_orders"
+    },
+    "model.customer_orders.lineitem_base": {
+      "unique_id": "model.customer_orders.lineitem_base",
+      "name": "lineitem_base",
+      "resource_type": "model",
+      "database": "customer_orders",
+      "schema": "staging",
+      "relation_name": "customer_orders.staging.lineitem_base",
+      "columns": {
+        "l_orderkey": {
+          "name": "l_orderkey",
+          "data_type": null
+        },
+        "l_partkey": {
+          "name": "l_partkey",
+          "data_type": null
+        },
+        "l_suppkey": {
+          "name": "l_suppkey",
+          "data_type": null
+        },
+        "l_linenumber": {
+          "name": "l_linenumber",
+          "data_type": null
+        },
+        "l_quantity": {
+          "name": "l_quantity",
+          "data_type": null
+        },
+        "l_extendedprice": {
+          "name": "l_extendedprice",
+          "data_type": null
+        },
+        "l_discount": {
+          "name": "l_discount",
+          "data_type": null
+        },
+        "l_tax": {
+          "name": "l_tax",
+          "data_type": null
+        },
+        "l_returnflag": {
+          "name": "l_returnflag",
+          "data_type": null
+        },
+        "l_linestatus": {
+          "name": "l_linestatus",
+          "data_type": null
+        },
+        "l_shipdate": {
+          "name": "l_shipdate",
+          "data_type": null
+        },
+        "l_commitdate": {
+          "name": "l_commitdate",
+          "data_type": null
+        },
+        "l_receiptdate": {
+          "name": "l_receiptdate",
+          "data_type": null
+        },
+        "l_shipinstruct": {
+          "name": "l_shipinstruct",
+          "data_type": null
+        },
+        "l_shipmode": {
+          "name": "l_shipmode",
+          "data_type": null
+        },
+        "l_comment": {
+          "name": "l_comment",
+          "data_type": null
+        }
+      },
+      "depends_on": {
+        "macros": [],
+        "nodes": [
+          "source.customer_orders.snowflake_sample_data.lineitem"
+        ]
+      },
+      "refs": [],
+      "sources": [
+        [
+          "snowflake_sample_data",
+          "lineitem"
+        ]
+      ],
+      "raw_code": "-- Staging model for source_lineitem\nwith source_lineitem as (\n    select \n        *\n    from {{ source('snowflake_sample_data','lineitem')}}\n\n)\nselect * from source_lineitem",
+      "compiled_code": "-- Staging model for source_lineitem\nwith source_lineitem as (\n    select \n        *\n    from snowflake_sample_data.tpch_sf1.lineitem\n\n)\nselect * from source_lineitem"
+    },
+    "model.customer_orders.customer_orders_cy": {
+      "unique_id": "model.customer_orders.customer_orders_cy",
+      "name": "customer_orders_cy",
+      "resource_type": "model",
+      "database": "customer_orders",
+      "schema": "marts",
+      "relation_name": "customer_orders.marts.customer_orders_cy",
+      "columns": {
+        "o_orderkey": {
+          "name": "o_orderkey",
+          "data_type": null
+        },
+        "o_custkey": {
+          "name": "o_custkey",
+          "data_type": null
+        },
+        "o_orderstatus": {
+          "name": "o_orderstatus",
+          "data_type": null
+        },
+        "o_totalprice": {
+          "name": "o_totalprice",
+          "data_type": null
+        },
+        "o_orderdate": {
+          "name": "o_orderdate",
+          "data_type": null
+        },
+        "o_orderpriority": {
+          "name": "o_orderpriority",
+          "data_type": null
+        },
+        "o_clerk": {
+          "name": "o_clerk",
+          "data_type": null
+        },
+        "o_shippriority": {
+          "name": "o_shippriority",
+          "data_type": null
+        },
+        "o_comment": {
+          "name": "o_comment",
+          "data_type": null
+        },
+        "c_custkey": {
+          "name": "c_custkey",
+          "data_type": null
+        },
+        "c_name": {
+          "name": "c_name",
+          "data_type": null
+        },
+        "c_address": {
+          "name": "c_address",
+          "data_type": null
+        },
+        "c_nationkey": {
+          "name": "c_nationkey",
+          "data_type": null
+        },
+        "c_phone": {
+          "name": "c_phone",
+          "data_type": null
+        },
+        "c_acctbal": {
+          "name": "c_acctbal",
+          "data_type": null
+        },
+        "c_mktsegment": {
+          "name": "c_mktsegment",
+          "data_type": null
+        },
+        "c_comment": {
+          "name": "c_comment",
+          "data_type": null
+        },
+        "l_orderkey": {
+          "name": "l_orderkey",
+          "data_type": null
+        },
+        "l_partkey": {
+          "name": "l_partkey",
+          "data_type": null
+        },
+        "l_suppkey": {
+          "name": "l_suppkey",
+          "data_type": null
+        },
+        "l_linenumber": {
+          "name": "l_linenumber",
+          "data_type": null
+        },
+        "l_quantity": {
+          "name": "l_quantity",
+          "data_type": null
+        },
+        "l_extendedprice": {
+          "name": "l_extendedprice",
+          "data_type": null
+        },
+        "l_discount": {
+          "name": "l_discount",
+          "data_type": null
+        },
+        "l_tax": {
+          "name": "l_tax",
+          "data_type": null
+        },
+        "l_returnflag": {
+          "name": "l_returnflag",
+          "data_type": null
+        },
+        "l_linestatus": {
+          "name": "l_linestatus",
+          "data_type": null
+        },
+        "l_shipdate": {
+          "name": "l_shipdate",
+          "data_type": null
+        },
+        "l_commitdate": {
+          "name": "l_commitdate",
+          "data_type": null
+        },
+        "l_receiptdate": {
+          "name": "l_receiptdate",
+          "data_type": null
+        },
+        "l_shipinstruct": {
+          "name": "l_shipinstruct",
+          "data_type": null
+        },
+        "l_shipmode": {
+          "name": "l_shipmode",
+          "data_type": null
+        },
+        "l_comment": {
+          "name": "l_comment",
+          "data_type": null
+        }
+      },
+      "depends_on": {
+        "macros": [],
+        "nodes": [
+          "model.customer_orders.int_customer_orders_cy"
+        ]
+      },
+      "refs": [
+        {
+          "name": "int_customer_orders_cy",
+          "package": null,
+          "version": null
+        }
+      ],
+      "sources": [],
+      "raw_code": "with customer_orders_cy as (\n    Select \n    *\n    from \n    {{ ref('int_customer_orders_cy') }}\n)\nselect * from customer_orders_cy",
+      "compiled_code": "with customer_orders_cy as (\n    Select \n    *\n    from \n    customer_orders.intermediate.int_customer_orders_cy\n)\nselect * from customer_orders_cy"
+    },
+    "model.customer_orders.int_customer_orders_cy": {
+      "unique_id": "model.customer_orders.int_customer_orders_cy",
+      "name": "int_customer_orders_cy",
+      "resource_type": "model",
+      "database": "customer_orders",
+      "schema": "intermediate",
+      "relation_name": "customer_orders.intermediate.int_customer_orders_cy",
+      "columns": {
+        "o_orderkey": {
+          "name": "o_orderkey",
+          "data_type": null
+        },
+        "o_custkey": {
+          "name": "o_custkey",
+          "data_type": null
+        },
+        "o_orderstatus": {
+          "name": "o_orderstatus",
+          "data_type": null
+        },
+        "o_totalprice": {
+          "name": "o_totalprice",
+          "data_type": null
+        },
+        "o_orderdate": {
+          "name": "o_orderdate",
+          "data_type": null
+        },
+        "o_orderpriority": {
+          "name": "o_orderpriority",
+          "data_type": null
+        },
+        "o_clerk": {
+          "name": "o_clerk",
+          "data_type": null
+        },
+        "o_shippriority": {
+          "name": "o_shippriority",
+          "data_type": null
+        },
+        "o_comment": {
+          "name": "o_comment",
+          "data_type": null
+        },
+        "c_custkey": {
+          "name": "c_custkey",
+          "data_type": null
+        },
+        "c_name": {
+          "name": "c_name",
+          "data_type": null
+        },
+        "c_address": {
+          "name": "c_address",
+          "data_type": null
+        },
+        "c_nationkey": {
+          "name": "c_nationkey",
+          "data_type": null
+        },
+        "c_phone": {
+          "name": "c_phone",
+          "data_type": null
+        },
+        "c_acctbal": {
+          "name": "c_acctbal",
+          "data_type": null
+        },
+        "c_mktsegment": {
+          "name": "c_mktsegment",
+          "data_type": null
+        },
+        "c_comment": {
+          "name": "c_comment",
+          "data_type": null
+        },
+        "l_orderkey": {
+          "name": "l_orderkey",
+          "data_type": null
+        },
+        "l_partkey": {
+          "name": "l_partkey",
+          "data_type": null
+        },
+        "l_suppkey": {
+          "name": "l_suppkey",
+          "data_type": null
+        },
+        "l_linenumber": {
+          "name": "l_linenumber",
+          "data_type": null
+        },
+        "l_quantity": {
+          "name": "l_quantity",
+          "data_type": null
+        },
+        "l_extendedprice": {
+          "name": "l_extendedprice",
+          "data_type": null
+        },
+        "l_discount": {
+          "name": "l_discount",
+          "data_type": null
+        },
+        "l_tax": {
+          "name": "l_tax",
+          "data_type": null
+        },
+        "l_returnflag": {
+          "name": "l_returnflag",
+          "data_type": null
+        },
+        "l_linestatus": {
+          "name": "l_linestatus",
+          "data_type": null
+        },
+        "l_shipdate": {
+          "name": "l_shipdate",
+          "data_type": null
+        },
+        "l_commitdate": {
+          "name": "l_commitdate",
+          "data_type": null
+        },
+        "l_receiptdate": {
+          "name": "l_receiptdate",
+          "data_type": null
+        },
+        "l_shipinstruct": {
+          "name": "l_shipinstruct",
+          "data_type": null
+        },
+        "l_shipmode": {
+          "name": "l_shipmode",
+          "data_type": null
+        },
+        "l_comment": {
+          "name": "l_comment",
+          "data_type": null
+        }
+      },
+      "depends_on": {
+        "macros": [],
+        "nodes": [
+          "model.customer_orders.order_base",
+          "model.customer_orders.customer_base",
+          "model.customer_orders.lineitem_base"
+        ]
+      },
+      "refs": [
+        {
+          "name": "order_base",
+          "package": null,
+          "version": null
+        },
+        {
+          "name": "customer_base",
+          "package": null,
+          "version": null
+        },
+        {
+          "name": "lineitem_base",
+          "package": null,
+          "version": null
+        }
+      ],
+      "sources": [],
+      "raw_code": "with customer_orders as (\n    Select \n    c_name,\n    o_orderkey,\n    o_orderdate,\n    o_totalprice,\n    o_orderstatus,\n    o_orderpriority,\n    o_clerk,\n    o_shippriority,\n    o_comment,\n    c_custkey,\n    c_address,\n    c_nationkey,\n    c_phone,\n    c_acctbal,\n    c_mktsegment,\n    c_comment,\n    l_orderkey,\n    l_partkey,\n    l_suppkey,\n    l_linenumber,\n    l_quantity,\n    l_extendedprice,\n    l_discount,\n    case when c_nationkey = 2 then 0 else l_tax end as l_tax,\n    l_returnflag,\n    l_linestatus,\n    l_shipdate,\n    l_commitdate,\n    l_receiptdate,\n    l_shipinstruct,\n    l_shipmode,\n    l_comment\n    from \n    {{ ref('order_base') }} o \n    left join {{ ref('customer_base') }} c on o.o_custkey = c.c_custkey\n    left join {{ ref('lineitem_base') }} l on o.o_orderkey = l.l_orderkey\n    where date_part(year,o_orderdate) = 1998\n)\nselect * from customer_orders",
+      "compiled_code": "with customer_orders as (\n    Select \n    c_name,\n    o_orderkey,\n    o_orderdate,\n    o_totalprice,\n    o_orderstatus,\n    o_orderpriority,\n    o_clerk,\n    o_shippriority,\n    o_comment,\n    c_custkey,\n    c_address,\n    c_nationkey,\n    c_phone,\n    c_acctbal,\n    c_mktsegment,\n    c_comment,\n    l_orderkey,\n    l_partkey,\n    l_suppkey,\n    l_linenumber,\n    l_quantity,\n    l_extendedprice,\n    l_discount,\n    case when c_nationkey = 2 then 0 else l_tax end as l_tax,\n    l_returnflag,\n    l_linestatus,\n    l_shipdate,\n    l_commitdate,\n    l_receiptdate,\n    l_shipinstruct,\n    l_shipmode,\n    l_comment\n    from \n    customer_orders.staging.order_base o \n    left join customer_orders.staging.customer_base c on o.o_custkey = c.c_custkey\n    left join customer_orders.staging.lineitem_base l on o.o_orderkey = l.l_orderkey\n    where date_part(year,o_orderdate) = 1998\n)\nselect * from customer_orders"
+    },
+    "model.customer_orders.customer_orders_py": {
+      "unique_id": "model.customer_orders.customer_orders_py",
+      "name": "customer_orders_py",
+      "resource_type": "model",
+      "database": "customer_orders",
+      "schema": "marts",
+      "relation_name": "customer_orders.marts.customer_orders_py",
+      "columns": {
+        "o_orderkey": {
+          "name": "o_orderkey",
+          "data_type": null
+        },
+        "o_custkey": {
+          "name": "o_custkey",
+          "data_type": null
+        },
+        "o_orderstatus": {
+          "name": "o_orderstatus",
+          "data_type": null
+        },
+        "o_totalprice": {
+          "name": "o_totalprice",
+          "data_type": null
+        },
+        "o_orderdate": {
+          "name": "o_orderdate",
+          "data_type": null
+        },
+        "o_orderpriority": {
+          "name": "o_orderpriority",
+          "data_type": null
+        },
+        "o_clerk": {
+          "name": "o_clerk",
+          "data_type": null
+        },
+        "o_shippriority": {
+          "name": "o_shippriority",
+          "data_type": null
+        },
+        "o_comment": {
+          "name": "o_comment",
+          "data_type": null
+        },
+        "c_custkey": {
+          "name": "c_custkey",
+          "data_type": null
+        },
+        "c_name": {
+          "name": "c_name",
+          "data_type": null
+        },
+        "c_address": {
+          "name": "c_address",
+          "data_type": null
+        },
+        "c_nationkey": {
+          "name": "c_nationkey",
+          "data_type": null
+        },
+        "c_phone": {
+          "name": "c_phone",
+          "data_type": null
+        },
+        "c_acctbal": {
+          "name": "c_acctbal",
+          "data_type": null
+        },
+        "c_mktsegment": {
+          "name": "c_mktsegment",
+          "data_type": null
+        },
+        "c_comment": {
+          "name": "c_comment",
+          "data_type": null
+        },
+        "l_orderkey": {
+          "name": "l_orderkey",
+          "data_type": null
+        },
+        "l_partkey": {
+          "name": "l_partkey",
+          "data_type": null
+        },
+        "l_suppkey": {
+          "name": "l_suppkey",
+          "data_type": null
+        },
+        "l_linenumber": {
+          "name": "l_linenumber",
+          "data_type": null
+        },
+        "l_quantity": {
+          "name": "l_quantity",
+          "data_type": null
+        },
+        "l_extendedprice": {
+          "name": "l_extendedprice",
+          "data_type": null
+        },
+        "l_discount": {
+          "name": "l_discount",
+          "data_type": null
+        },
+        "l_tax": {
+          "name": "l_tax",
+          "data_type": null
+        },
+        "l_returnflag": {
+          "name": "l_returnflag",
+          "data_type": null
+        },
+        "l_linestatus": {
+          "name": "l_linestatus",
+          "data_type": null
+        },
+        "l_shipdate": {
+          "name": "l_shipdate",
+          "data_type": null
+        },
+        "l_commitdate": {
+          "name": "l_commitdate",
+          "data_type": null
+        },
+        "l_receiptdate": {
+          "name": "l_receiptdate",
+          "data_type": null
+        },
+        "l_shipinstruct": {
+          "name": "l_shipinstruct",
+          "data_type": null
+        },
+        "l_shipmode": {
+          "name": "l_shipmode",
+          "data_type": null
+        },
+        "l_comment": {
+          "name": "l_comment",
+          "data_type": null
+        }
+      },
+      "depends_on": {
+        "macros": [],
+        "nodes": [
+          "model.customer_orders.int_customer_orders_py"
+        ]
+      },
+      "refs": [
+        {
+          "name": "int_customer_orders_py",
+          "package": null,
+          "version": null
+        }
+      ],
+      "sources": [],
+      "raw_code": "with customer_orders_py as (\n    Select \n    *\n    from \n    {{ ref('int_customer_orders_py') }}\n)\nselect * from customer_orders_py",
+      "compiled_code": "with customer_orders_py as (\n    Select \n    *\n    from \n    customer_orders.intermediate.int_customer_orders_py\n)\nselect * from customer_orders_py"
+    },
+    "model.customer_orders.int_customer_orders_py": {
+      "unique_id": "model.customer_orders.int_customer_orders_py",
+      "name": "int_customer_orders_py",
+      "resource_type": "model",
+      "database": "customer_orders",
+      "schema": "intermediate",
+      "relation_name": "customer_orders.intermediate.int_customer_orders_py",
+      "columns": {
+        "o_orderkey": {
+          "name": "o_orderkey",
+          "data_type": null
+        },
+        "o_custkey": {
+          "name": "o_custkey",
+          "data_type": null
+        },
+        "o_orderstatus": {
+          "name": "o_orderstatus",
+          "data_type": null
+        },
+        "o_totalprice": {
+          "name": "o_totalprice",
+          "data_type": null
+        },
+        "o_orderdate": {
+          "name": "o_orderdate",
+          "data_type": null
+        },
+        "o_orderpriority": {
+          "name": "o_orderpriority",
+          "data_type": null
+        },
+        "o_clerk": {
+          "name": "o_clerk",
+          "data_type": null
+        },
+        "o_shippriority": {
+          "name": "o_shippriority",
+          "data_type": null
+        },
+        "o_comment": {
+          "name": "o_comment",
+          "data_type": null
+        },
+        "c_custkey": {
+          "name": "c_custkey",
+          "data_type": null
+        },
+        "c_name": {
+          "name": "c_name",
+          "data_type": null
+        },
+        "c_address": {
+          "name": "c_address",
+          "data_type": null
+        },
+        "c_nationkey": {
+          "name": "c_nationkey",
+          "data_type": null
+        },
+        "c_phone": {
+          "name": "c_phone",
+          "data_type": null
+        },
+        "c_acctbal": {
+          "name": "c_acctbal",
+          "data_type": null
+        },
+        "c_mktsegment": {
+          "name": "c_mktsegment",
+          "data_type": null
+        },
+        "c_comment": {
+          "name": "c_comment",
+          "data_type": null
+        },
+        "l_orderkey": {
+          "name": "l_orderkey",
+          "data_type": null
+        },
+        "l_partkey": {
+          "name": "l_partkey",
+          "data_type": null
+        },
+        "l_suppkey": {
+          "name": "l_suppkey",
+          "data_type": null
+        },
+        "l_linenumber": {
+          "name": "l_linenumber",
+          "data_type": null
+        },
+        "l_quantity": {
+          "name": "l_quantity",
+          "data_type": null
+        },
+        "l_extendedprice": {
+          "name": "l_extendedprice",
+          "data_type": null
+        },
+        "l_discount": {
+          "name": "l_discount",
+          "data_type": null
+        },
+        "l_tax": {
+          "name": "l_tax",
+          "data_type": null
+        },
+        "l_returnflag": {
+          "name": "l_returnflag",
+          "data_type": null
+        },
+        "l_linestatus": {
+          "name": "l_linestatus",
+          "data_type": null
+        },
+        "l_shipdate": {
+          "name": "l_shipdate",
+          "data_type": null
+        },
+        "l_commitdate": {
+          "name": "l_commitdate",
+          "data_type": null
+        },
+        "l_receiptdate": {
+          "name": "l_receiptdate",
+          "data_type": null
+        },
+        "l_shipinstruct": {
+          "name": "l_shipinstruct",
+          "data_type": null
+        },
+        "l_shipmode": {
+          "name": "l_shipmode",
+          "data_type": null
+        },
+        "l_comment": {
+          "name": "l_comment",
+          "data_type": null
+        }
+      },
+      "depends_on": {
+        "macros": [
+          "macro.customer_orders.apply_tax"
+        ],
+        "nodes": [
+          "model.customer_orders.order_base",
+          "model.customer_orders.customer_base",
+          "model.customer_orders.lineitem_base"
+        ]
+      },
+      "refs": [
+        {
+          "name": "order_base",
+          "package": null,
+          "version": null
+        },
+        {
+          "name": "customer_base",
+          "package": null,
+          "version": null
+        },
+        {
+          "name": "lineitem_base",
+          "package": null,
+          "version": null
+        }
+      ],
+      "sources": [],
+      "raw_code": "with customer_orders as (\n    Select \n    c_name,\n    o_orderkey,\n    o_orderdate,\n    o_totalprice,\n    o_orderstatus,\n    o_orderpriority,\n    o_clerk,\n    o_shippriority,\n    o_comment,\n    c_custkey,\n    c_address,\n    c_nationkey,\n    c_phone,\n    c_acctbal,\n    c_mktsegment,\n    c_comment,\n    l_orderkey,\n    l_partkey,\n    l_suppkey,\n    l_linenumber,\n    l_quantity,\n    l_extendedprice,\n    l_discount,\n    {{ apply_tax('c_nationkey', 'l_tax') }} as l_tax,\n    l_returnflag,\n    l_linestatus,\n    l_shipdate,\n    l_commitdate,\n    l_receiptdate,\n    l_shipinstruct,\n    l_shipmode,\n    l_comment\n    from \n    {{ ref('order_base') }} o \n    left join {{ ref('customer_base') }} c on o.o_custkey = c.c_custkey\n    left join {{ ref('lineitem_base') }} l on o.o_orderkey = l.l_orderkey\n    where date_part(year,o_orderdate) < 1998\n)\nselect * from customer_orders",
+      "compiled_code": "with customer_orders as (\n    Select \n    c_name,\n    o_orderkey,\n    o_orderdate,\n    o_totalprice,\n    o_orderstatus,\n    o_orderpriority,\n    o_clerk,\n    o_shippriority,\n    o_comment,\n    c_custkey,\n    c_address,\n    c_nationkey,\n    c_phone,\n    c_acctbal,\n    c_mktsegment,\n    c_comment,\n    l_orderkey,\n    l_partkey,\n    l_suppkey,\n    l_linenumber,\n    l_quantity,\n    l_extendedprice,\n    l_discount,\n    \n    (\n        case \n            -- This runs in the database for every row\n            when c_nationkey = 2 then 0 \n            else l_tax\n        end\n    )\n as l_tax,\n    l_returnflag,\n    l_linestatus,\n    l_shipdate,\n    l_commitdate,\n    l_receiptdate,\n    l_shipinstruct,\n    l_shipmode,\n    l_comment\n    from \n    customer_orders.staging.order_base o \n    left join customer_orders.staging.customer_base c on o.o_custkey = c.c_custkey\n    left join customer_orders.staging.lineitem_base l on o.o_orderkey = l.l_orderkey\n    where date_part(year,o_orderdate) < 1998\n)\nselect * from customer_orders"
+    }
+  },
+  "sources": {
+    "source.customer_orders.snowflake_sample_data.customer": {
+      "unique_id": "source.customer_orders.snowflake_sample_data.customer",
+      "name": "customer",
+      "resource_type": "source",
+      "database": "snowflake_sample_data",
+      "schema": "tpch_sf1",
+      "relation_name": "snowflake_sample_data.tpch_sf1.customer",
+      "columns": {},
+      "depends_on": null,
+      "refs": null,
+      "sources": null,
+      "raw_code": null,
+      "compiled_code": null
+    },
+    "source.customer_orders.snowflake_sample_data.orders": {
+      "unique_id": "source.customer_orders.snowflake_sample_data.orders",
+      "name": "orders",
+      "resource_type": "source",
+      "database": "snowflake_sample_data",
+      "schema": "tpch_sf1",
+      "relation_name": "snowflake_sample_data.tpch_sf1.orders",
+      "columns": {},
+      "depends_on": null,
+      "refs": null,
+      "sources": null,
+      "raw_code": null,
+      "compiled_code": null
+    },
+    "source.customer_orders.snowflake_sample_data.lineitem": {
+      "unique_id": "source.customer_orders.snowflake_sample_data.lineitem",
+      "name": "lineitem",
+      "resource_type": "source",
+      "database": "snowflake_sample_data",
+      "schema": "tpch_sf1",
+      "relation_name": "snowflake_sample_data.tpch_sf1.lineitem",
+      "columns": {},
+      "depends_on": null,
+      "refs": null,
+      "sources": null,
+      "raw_code": null,
+      "compiled_code": null
+    }
+  },
+  "parent_map": {
+    "model.customer_orders.customer_base": [
+      "source.customer_orders.snowflake_sample_data.customer"
+    ],
+    "model.customer_orders.order_base": [
+      "source.customer_orders.snowflake_sample_data.orders"
+    ],
+    "model.customer_orders.lineitem_base": [
+      "source.customer_orders.snowflake_sample_data.lineitem"
+    ],
+    "model.customer_orders.customer_orders_cy": [
+      "model.customer_orders.int_customer_orders_cy"
+    ],
+    "model.customer_orders.int_customer_orders_cy": [
+      "model.customer_orders.customer_base",
+      "model.customer_orders.lineitem_base",
+      "model.customer_orders.order_base"
+    ],
+    "model.customer_orders.customer_orders_py": [
+      "model.customer_orders.int_customer_orders_py"
+    ],
+    "model.customer_orders.int_customer_orders_py": [
+      "model.customer_orders.customer_base",
+      "model.customer_orders.lineitem_base",
+      "model.customer_orders.order_base"
+    ],
+    "source.customer_orders.snowflake_sample_data.customer": [],
+    "source.customer_orders.snowflake_sample_data.orders": [],
+    "source.customer_orders.snowflake_sample_data.lineitem": []
+  },
+  "child_map": {
+    "model.customer_orders.customer_base": [
+      "model.customer_orders.int_customer_orders_cy",
+      "model.customer_orders.int_customer_orders_py"
+    ],
+    "model.customer_orders.order_base": [
+      "model.customer_orders.int_customer_orders_cy",
+      "model.customer_orders.int_customer_orders_py"
+    ],
+    "model.customer_orders.lineitem_base": [
+      "model.customer_orders.int_customer_orders_cy",
+      "model.customer_orders.int_customer_orders_py"
+    ],
+    "model.customer_orders.customer_orders_cy": [],
+    "model.customer_orders.int_customer_orders_cy": [
+      "model.customer_orders.customer_orders_cy"
+    ],
+    "model.customer_orders.customer_orders_py": [],
+    "model.customer_orders.int_customer_orders_py": [
+      "model.customer_orders.customer_orders_py"
+    ],
+    "source.customer_orders.snowflake_sample_data.customer": [
+      "model.customer_orders.customer_base"
+    ],
+    "source.customer_orders.snowflake_sample_data.orders": [
+      "model.customer_orders.order_base"
+    ],
+    "source.customer_orders.snowflake_sample_data.lineitem": [
+      "model.customer_orders.lineitem_base"
+    ]
+  }
+}

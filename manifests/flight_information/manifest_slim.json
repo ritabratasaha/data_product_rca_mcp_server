@@ -1,0 +1,998 @@
+{
+  "nodes": {
+    "model.flight_information.stg_boarding_passes": {
+      "unique_id": "model.flight_information.stg_boarding_passes",
+      "name": "stg_boarding_passes",
+      "resource_type": "model",
+      "database": "postgres",
+      "schema": "staging",
+      "relation_name": "\"postgres\".\"staging\".\"stg_boarding_passes\"",
+      "columns": {
+        "ticket_no": {
+          "name": "ticket_no",
+          "data_type": null
+        },
+        "flight_id": {
+          "name": "flight_id",
+          "data_type": null
+        },
+        "seat_no": {
+          "name": "seat_no",
+          "data_type": null
+        },
+        "boarding_no": {
+          "name": "boarding_no",
+          "data_type": null
+        },
+        "boarding_time": {
+          "name": "boarding_time",
+          "data_type": null
+        }
+      },
+      "depends_on": {
+        "macros": [],
+        "nodes": [
+          "source.flight_information.postgres.boarding_passes"
+        ]
+      },
+      "refs": [],
+      "sources": [
+        [
+          "postgres",
+          "boarding_passes"
+        ]
+      ],
+      "raw_code": "with source as (\n\n    select * from {{ source('postgres', 'boarding_passes') }}\n\n),\n\nrenamed as (\n\n    select\n        ticket_no,\n        flight_id,\n        seat_no,\n        boarding_no,\n        boarding_time\n    from source\n\n)\n\nselect * from renamed",
+      "compiled_code": "with source as (\n\n    select * from \"postgres\".\"flight_info\".\"boarding_passes\"\n\n),\n\nrenamed as (\n\n    select\n        ticket_no,\n        flight_id,\n        seat_no,\n        boarding_no,\n        boarding_time\n    from source\n\n)\n\nselect * from renamed"
+    },
+    "model.flight_information.stg_segments": {
+      "unique_id": "model.flight_information.stg_segments",
+      "name": "stg_segments",
+      "resource_type": "model",
+      "database": "postgres",
+      "schema": "staging",
+      "relation_name": "\"postgres\".\"staging\".\"stg_segments\"",
+      "columns": {
+        "ticket_no": {
+          "name": "ticket_no",
+          "data_type": null
+        },
+        "flight_id": {
+          "name": "flight_id",
+          "data_type": null
+        },
+        "fare_conditions": {
+          "name": "fare_conditions",
+          "data_type": null
+        },
+        "price": {
+          "name": "price",
+          "data_type": null
+        }
+      },
+      "depends_on": {
+        "macros": [],
+        "nodes": [
+          "source.flight_information.postgres.segments"
+        ]
+      },
+      "refs": [],
+      "sources": [
+        [
+          "postgres",
+          "segments"
+        ]
+      ],
+      "raw_code": "with source as (\n\n    select * from {{ source('postgres', 'segments') }}\n\n),\n\nrenamed as (\n\n    select\n        ticket_no,\n        flight_id,\n        fare_conditions,\n        price\n    from source\n\n)\n\nselect * from renamed",
+      "compiled_code": "with source as (\n\n    select * from \"postgres\".\"flight_info\".\"segments\"\n\n),\n\nrenamed as (\n\n    select\n        ticket_no,\n        flight_id,\n        fare_conditions,\n        price\n    from source\n\n)\n\nselect * from renamed"
+    },
+    "model.flight_information.stg_routes": {
+      "unique_id": "model.flight_information.stg_routes",
+      "name": "stg_routes",
+      "resource_type": "model",
+      "database": "postgres",
+      "schema": "staging",
+      "relation_name": "\"postgres\".\"staging\".\"stg_routes\"",
+      "columns": {
+        "route_no": {
+          "name": "route_no",
+          "data_type": null
+        },
+        "validity": {
+          "name": "validity",
+          "data_type": null
+        },
+        "departure_airport": {
+          "name": "departure_airport",
+          "data_type": null
+        },
+        "arrival_airport": {
+          "name": "arrival_airport",
+          "data_type": null
+        },
+        "airplane_code": {
+          "name": "airplane_code",
+          "data_type": null
+        },
+        "days_of_week": {
+          "name": "days_of_week",
+          "data_type": null
+        },
+        "scheduled_time": {
+          "name": "scheduled_time",
+          "data_type": null
+        },
+        "duration": {
+          "name": "duration",
+          "data_type": null
+        }
+      },
+      "depends_on": {
+        "macros": [],
+        "nodes": [
+          "source.flight_information.postgres.routes"
+        ]
+      },
+      "refs": [],
+      "sources": [
+        [
+          "postgres",
+          "routes"
+        ]
+      ],
+      "raw_code": "with source as (\n\n    select * from {{ source('postgres', 'routes') }}\n\n),\n\nrenamed as (\n\n    select\n        route_no,\n        validity,\n        departure_airport,\n        arrival_airport,\n        airplane_code,\n        days_of_week,\n        scheduled_time,\n        duration\n    from source\n\n)\n\nselect * from renamed",
+      "compiled_code": "with source as (\n\n    select * from \"postgres\".\"flight_info\".\"routes\"\n\n),\n\nrenamed as (\n\n    select\n        route_no,\n        validity,\n        departure_airport,\n        arrival_airport,\n        airplane_code,\n        days_of_week,\n        scheduled_time,\n        duration\n    from source\n\n)\n\nselect * from renamed"
+    },
+    "model.flight_information.stg_tickets": {
+      "unique_id": "model.flight_information.stg_tickets",
+      "name": "stg_tickets",
+      "resource_type": "model",
+      "database": "postgres",
+      "schema": "staging",
+      "relation_name": "\"postgres\".\"staging\".\"stg_tickets\"",
+      "columns": {
+        "ticket_no": {
+          "name": "ticket_no",
+          "data_type": null
+        },
+        "book_ref": {
+          "name": "book_ref",
+          "data_type": null
+        },
+        "passenger_id": {
+          "name": "passenger_id",
+          "data_type": null
+        },
+        "passenger_name": {
+          "name": "passenger_name",
+          "data_type": null
+        },
+        "outbound": {
+          "name": "outbound",
+          "data_type": null
+        }
+      },
+      "depends_on": {
+        "macros": [],
+        "nodes": [
+          "source.flight_information.postgres.tickets"
+        ]
+      },
+      "refs": [],
+      "sources": [
+        [
+          "postgres",
+          "tickets"
+        ]
+      ],
+      "raw_code": "with source as (\n\n    select * from {{ source('postgres', 'tickets') }}\n\n),\n\nrenamed as (\n\n    select\n        ticket_no,\n        book_ref,\n        passenger_id,\n        passenger_name,\n        outbound\n    from source\n\n)\n\nselect * from renamed",
+      "compiled_code": "with source as (\n\n    select * from \"postgres\".\"flight_info\".\"tickets\"\n\n),\n\nrenamed as (\n\n    select\n        ticket_no,\n        book_ref,\n        passenger_id,\n        passenger_name,\n        outbound\n    from source\n\n)\n\nselect * from renamed"
+    },
+    "model.flight_information.stg_flights": {
+      "unique_id": "model.flight_information.stg_flights",
+      "name": "stg_flights",
+      "resource_type": "model",
+      "database": "postgres",
+      "schema": "staging",
+      "relation_name": "\"postgres\".\"staging\".\"stg_flights\"",
+      "columns": {
+        "flight_id": {
+          "name": "flight_id",
+          "data_type": null
+        },
+        "route_no": {
+          "name": "route_no",
+          "data_type": null
+        },
+        "status": {
+          "name": "status",
+          "data_type": null
+        },
+        "scheduled_departure": {
+          "name": "scheduled_departure",
+          "data_type": null
+        },
+        "scheduled_arrival": {
+          "name": "scheduled_arrival",
+          "data_type": null
+        },
+        "actual_departure": {
+          "name": "actual_departure",
+          "data_type": null
+        },
+        "actual_arrival": {
+          "name": "actual_arrival",
+          "data_type": null
+        }
+      },
+      "depends_on": {
+        "macros": [],
+        "nodes": [
+          "source.flight_information.postgres.flights"
+        ]
+      },
+      "refs": [],
+      "sources": [
+        [
+          "postgres",
+          "flights"
+        ]
+      ],
+      "raw_code": "with source as (\n\n    select * from {{ source('postgres', 'flights') }}\n\n),\n\nrenamed as (\n\n    select\n        flight_id,\n        route_no,\n        status,\n        scheduled_departure,\n        scheduled_arrival,\n        actual_departure,\n        actual_arrival\n    from source\n\n)\n\nselect * from renamed",
+      "compiled_code": "with source as (\n\n    select * from \"postgres\".\"flight_info\".\"flights\"\n\n),\n\nrenamed as (\n\n    select\n        flight_id,\n        route_no,\n        status,\n        scheduled_departure,\n        scheduled_arrival,\n        actual_departure,\n        actual_arrival\n    from source\n\n)\n\nselect * from renamed"
+    },
+    "model.flight_information.stg_bookings": {
+      "unique_id": "model.flight_information.stg_bookings",
+      "name": "stg_bookings",
+      "resource_type": "model",
+      "database": "postgres",
+      "schema": "staging",
+      "relation_name": "\"postgres\".\"staging\".\"stg_bookings\"",
+      "columns": {
+        "book_ref": {
+          "name": "book_ref",
+          "data_type": null
+        },
+        "book_date": {
+          "name": "book_date",
+          "data_type": null
+        },
+        "total_amount": {
+          "name": "total_amount",
+          "data_type": null
+        }
+      },
+      "depends_on": {
+        "macros": [],
+        "nodes": [
+          "source.flight_information.postgres.bookings"
+        ]
+      },
+      "refs": [],
+      "sources": [
+        [
+          "postgres",
+          "bookings"
+        ]
+      ],
+      "raw_code": "with source as (\n\n    select * from {{ source('postgres', 'bookings') }}\n\n),\n\nrenamed as (\n\n    select\n        book_ref,\n        book_date,\n        total_amount\n    from source\n\n)\n\nselect * from renamed",
+      "compiled_code": "with source as (\n\n    select * from \"postgres\".\"flight_info\".\"bookings\"\n\n),\n\nrenamed as (\n\n    select\n        book_ref,\n        book_date,\n        total_amount\n    from source\n\n)\n\nselect * from renamed"
+    },
+    "model.flight_information.bookings": {
+      "unique_id": "model.flight_information.bookings",
+      "name": "bookings",
+      "resource_type": "model",
+      "database": "postgres",
+      "schema": "marts",
+      "relation_name": "\"postgres\".\"marts\".\"bookings\"",
+      "columns": {
+        "book_ref": {
+          "name": "book_ref",
+          "data_type": null
+        },
+        "book_date": {
+          "name": "book_date",
+          "data_type": null
+        },
+        "total_amount": {
+          "name": "total_amount",
+          "data_type": null
+        },
+        "booking_date": {
+          "name": "booking_date",
+          "data_type": null
+        },
+        "booking_year": {
+          "name": "booking_year",
+          "data_type": null
+        },
+        "booking_month": {
+          "name": "booking_month",
+          "data_type": null
+        }
+      },
+      "depends_on": {
+        "macros": [],
+        "nodes": [
+          "model.flight_information.stg_bookings"
+        ]
+      },
+      "refs": [
+        {
+          "name": "stg_bookings",
+          "package": null,
+          "version": null
+        }
+      ],
+      "sources": [],
+      "raw_code": "with bookings as (\n\n    select * from {{ ref('stg_bookings') }}\n\n),\n\nfinal as (\n\n    select\n        book_ref,\n        book_date,\n        total_amount,\n        date(book_date) as booking_date,\n        extract(year from book_date) as booking_year,\n        extract(month from book_date) as booking_month\n    from bookings\n\n)\n\nselect * from final",
+      "compiled_code": "with bookings as (\n\n    select * from \"postgres\".\"staging\".\"stg_bookings\"\n\n),\n\nfinal as (\n\n    select\n        book_ref,\n        book_date,\n        total_amount,\n        date(book_date) as booking_date,\n        extract(year from book_date) as booking_year,\n        extract(month from book_date) as booking_month\n    from bookings\n\n)\n\nselect * from final"
+    },
+    "model.flight_information.flight_type": {
+      "unique_id": "model.flight_information.flight_type",
+      "name": "flight_type",
+      "resource_type": "model",
+      "database": "postgres",
+      "schema": "marts",
+      "relation_name": "\"postgres\".\"marts\".\"flight_type\"",
+      "columns": {
+        "flight_id": {
+          "name": "flight_id",
+          "data_type": null
+        },
+        "route_no": {
+          "name": "route_no",
+          "data_type": null
+        },
+        "flight_status": {
+          "name": "flight_status",
+          "data_type": null
+        },
+        "scheduled_departure": {
+          "name": "scheduled_departure",
+          "data_type": null
+        },
+        "scheduled_arrival": {
+          "name": "scheduled_arrival",
+          "data_type": null
+        },
+        "actual_departure": {
+          "name": "actual_departure",
+          "data_type": null
+        },
+        "actual_arrival": {
+          "name": "actual_arrival",
+          "data_type": null
+        },
+        "flight_type": {
+          "name": "flight_type",
+          "data_type": null
+        }
+      },
+      "depends_on": {
+        "macros": [],
+        "nodes": [
+          "model.flight_information.int_flight_type"
+        ]
+      },
+      "refs": [
+        {
+          "name": "int_flight_type",
+          "package": null,
+          "version": null
+        }
+      ],
+      "sources": [],
+      "raw_code": "with flight_type as (\n\n    select * from {{ ref('int_flight_type') }}\n\n),\n\nfinal as (\n\n    select\n        flight_id,\n        route_no,\n        flight_status,\n        scheduled_departure,\n        scheduled_arrival,\n        actual_departure,\n        actual_arrival,\n        flight_type\n    from flight_type\n\n)\n\nselect * from final",
+      "compiled_code": "with flight_type as (\n\n    select * from \"postgres\".\"intermediate\".\"int_flight_type\"\n\n),\n\nfinal as (\n\n    select\n        flight_id,\n        route_no,\n        flight_status,\n        scheduled_departure,\n        scheduled_arrival,\n        actual_departure,\n        actual_arrival,\n        flight_type\n    from flight_type\n\n)\n\nselect * from final"
+    },
+    "model.flight_information.ticket_information": {
+      "unique_id": "model.flight_information.ticket_information",
+      "name": "ticket_information",
+      "resource_type": "model",
+      "database": "postgres",
+      "schema": "marts",
+      "relation_name": "\"postgres\".\"marts\".\"ticket_information\"",
+      "columns": {
+        "ticket_no": {
+          "name": "ticket_no",
+          "data_type": null
+        },
+        "book_ref": {
+          "name": "book_ref",
+          "data_type": null
+        },
+        "passenger_id": {
+          "name": "passenger_id",
+          "data_type": null
+        },
+        "passenger_name": {
+          "name": "passenger_name",
+          "data_type": null
+        },
+        "outbound": {
+          "name": "outbound",
+          "data_type": null
+        },
+        "flight_id": {
+          "name": "flight_id",
+          "data_type": null
+        },
+        "fare_conditions": {
+          "name": "fare_conditions",
+          "data_type": null
+        },
+        "price": {
+          "name": "price",
+          "data_type": null
+        },
+        "route_no": {
+          "name": "route_no",
+          "data_type": null
+        },
+        "flight_status": {
+          "name": "flight_status",
+          "data_type": null
+        },
+        "scheduled_departure": {
+          "name": "scheduled_departure",
+          "data_type": null
+        },
+        "scheduled_arrival": {
+          "name": "scheduled_arrival",
+          "data_type": null
+        },
+        "actual_departure": {
+          "name": "actual_departure",
+          "data_type": null
+        },
+        "actual_arrival": {
+          "name": "actual_arrival",
+          "data_type": null
+        }
+      },
+      "depends_on": {
+        "macros": [],
+        "nodes": [
+          "model.flight_information.int_ticket_information"
+        ]
+      },
+      "refs": [
+        {
+          "name": "int_ticket_information",
+          "package": null,
+          "version": null
+        }
+      ],
+      "sources": [],
+      "raw_code": "with ticket_information as (\n\n    select * from {{ ref('int_ticket_information') }}\n\n),\n\nfinal as (\n\n    select\n        ticket_no,\n        book_ref,\n        passenger_id,\n        passenger_name,\n        outbound,\n        flight_id,\n        fare_conditions,\n        price,\n        route_no,\n        flight_status,\n        scheduled_departure,\n        scheduled_arrival,\n        actual_departure,\n        actual_arrival\n    from ticket_information\n\n)\n\nselect * from final",
+      "compiled_code": "with ticket_information as (\n\n    select * from \"postgres\".\"intermediate\".\"int_ticket_information\"\n\n),\n\nfinal as (\n\n    select\n        ticket_no,\n        book_ref,\n        passenger_id,\n        passenger_name,\n        outbound,\n        flight_id,\n        fare_conditions,\n        price,\n        route_no,\n        flight_status,\n        scheduled_departure,\n        scheduled_arrival,\n        actual_departure,\n        actual_arrival\n    from ticket_information\n\n)\n\nselect * from final"
+    },
+    "model.flight_information.int_flight_boarding": {
+      "unique_id": "model.flight_information.int_flight_boarding",
+      "name": "int_flight_boarding",
+      "resource_type": "model",
+      "database": "postgres",
+      "schema": "intermediate",
+      "relation_name": "\"postgres\".\"intermediate\".\"int_flight_boarding\"",
+      "columns": {
+        "flight_id": {
+          "name": "flight_id",
+          "data_type": null
+        },
+        "route_no": {
+          "name": "route_no",
+          "data_type": null
+        },
+        "flight_status": {
+          "name": "flight_status",
+          "data_type": null
+        },
+        "scheduled_departure": {
+          "name": "scheduled_departure",
+          "data_type": null
+        },
+        "scheduled_arrival": {
+          "name": "scheduled_arrival",
+          "data_type": null
+        },
+        "actual_departure": {
+          "name": "actual_departure",
+          "data_type": null
+        },
+        "actual_arrival": {
+          "name": "actual_arrival",
+          "data_type": null
+        },
+        "ticket_no": {
+          "name": "ticket_no",
+          "data_type": null
+        },
+        "seat_no": {
+          "name": "seat_no",
+          "data_type": null
+        },
+        "boarding_no": {
+          "name": "boarding_no",
+          "data_type": null
+        },
+        "boarding_time": {
+          "name": "boarding_time",
+          "data_type": null
+        }
+      },
+      "depends_on": {
+        "macros": [],
+        "nodes": [
+          "model.flight_information.stg_flights",
+          "model.flight_information.stg_boarding_passes"
+        ]
+      },
+      "refs": [
+        {
+          "name": "stg_flights",
+          "package": null,
+          "version": null
+        },
+        {
+          "name": "stg_boarding_passes",
+          "package": null,
+          "version": null
+        }
+      ],
+      "sources": [],
+      "raw_code": "with flights as (\n\n    select * from {{ ref('stg_flights') }}\n\n),\n\nboarding_passes as (\n\n    select * from {{ ref('stg_boarding_passes') }}\n\n),\n\nflight_boarding_details as (\n\n    select\n        f.flight_id,\n        f.route_no,\n        f.status as flight_status,\n        f.scheduled_departure,\n        f.scheduled_arrival,\n        f.actual_departure,\n        f.actual_arrival,\n        bp.ticket_no,\n        bp.seat_no,\n        bp.boarding_no,\n        bp.boarding_time\n    from flights f\n    left join boarding_passes bp on f.flight_id = bp.flight_id\n\n)\n\nselect * from flight_boarding_details",
+      "compiled_code": "with flights as (\n\n    select * from \"postgres\".\"staging\".\"stg_flights\"\n\n),\n\nboarding_passes as (\n\n    select * from \"postgres\".\"staging\".\"stg_boarding_passes\"\n\n),\n\nflight_boarding_details as (\n\n    select\n        f.flight_id,\n        f.route_no,\n        f.status as flight_status,\n        f.scheduled_departure,\n        f.scheduled_arrival,\n        f.actual_departure,\n        f.actual_arrival,\n        bp.ticket_no,\n        bp.seat_no,\n        bp.boarding_no,\n        bp.boarding_time\n    from flights f\n    left join boarding_passes bp on f.flight_id = bp.flight_id\n\n)\n\nselect * from flight_boarding_details"
+    },
+    "model.flight_information.int_ticket_information": {
+      "unique_id": "model.flight_information.int_ticket_information",
+      "name": "int_ticket_information",
+      "resource_type": "model",
+      "database": "postgres",
+      "schema": "intermediate",
+      "relation_name": "\"postgres\".\"intermediate\".\"int_ticket_information\"",
+      "columns": {
+        "ticket_no": {
+          "name": "ticket_no",
+          "data_type": null
+        },
+        "book_ref": {
+          "name": "book_ref",
+          "data_type": null
+        },
+        "passenger_id": {
+          "name": "passenger_id",
+          "data_type": null
+        },
+        "passenger_name": {
+          "name": "passenger_name",
+          "data_type": null
+        },
+        "outbound": {
+          "name": "outbound",
+          "data_type": null
+        },
+        "flight_id": {
+          "name": "flight_id",
+          "data_type": null
+        },
+        "fare_conditions": {
+          "name": "fare_conditions",
+          "data_type": null
+        },
+        "price": {
+          "name": "price",
+          "data_type": null
+        },
+        "route_no": {
+          "name": "route_no",
+          "data_type": null
+        },
+        "flight_status": {
+          "name": "flight_status",
+          "data_type": null
+        },
+        "scheduled_departure": {
+          "name": "scheduled_departure",
+          "data_type": null
+        },
+        "scheduled_arrival": {
+          "name": "scheduled_arrival",
+          "data_type": null
+        },
+        "actual_departure": {
+          "name": "actual_departure",
+          "data_type": null
+        },
+        "actual_arrival": {
+          "name": "actual_arrival",
+          "data_type": null
+        }
+      },
+      "depends_on": {
+        "macros": [],
+        "nodes": [
+          "model.flight_information.stg_tickets",
+          "model.flight_information.stg_segments",
+          "model.flight_information.stg_flights"
+        ]
+      },
+      "refs": [
+        {
+          "name": "stg_tickets",
+          "package": null,
+          "version": null
+        },
+        {
+          "name": "stg_segments",
+          "package": null,
+          "version": null
+        },
+        {
+          "name": "stg_flights",
+          "package": null,
+          "version": null
+        }
+      ],
+      "sources": [],
+      "raw_code": "with tickets as (\n\n    select * from {{ ref('stg_tickets') }}\n\n),\n\nsegments as (\n\n    select * from {{ ref('stg_segments') }}\n\n),\n\nflights as (\n\n    select * from {{ ref('stg_flights') }}\n\n),\n\nticket_details as (\n\n    select\n        t.ticket_no,\n        t.book_ref,\n        t.passenger_id,\n        t.passenger_name,\n        t.outbound,\n        s.flight_id,\n        s.fare_conditions,\n        s.price,\n        f.route_no,\n        f.status as flight_status,\n        f.scheduled_departure,\n        f.scheduled_arrival,\n        f.actual_departure,\n        f.actual_arrival\n    from tickets t\n    left join segments s on t.ticket_no = s.ticket_no\n    left join flights f on s.flight_id = f.flight_id\n\n)\n\nselect * from ticket_details",
+      "compiled_code": "with tickets as (\n\n    select * from \"postgres\".\"staging\".\"stg_tickets\"\n\n),\n\nsegments as (\n\n    select * from \"postgres\".\"staging\".\"stg_segments\"\n\n),\n\nflights as (\n\n    select * from \"postgres\".\"staging\".\"stg_flights\"\n\n),\n\nticket_details as (\n\n    select\n        t.ticket_no,\n        t.book_ref,\n        t.passenger_id,\n        t.passenger_name,\n        t.outbound,\n        s.flight_id,\n        s.fare_conditions,\n        s.price,\n        f.route_no,\n        f.status as flight_status,\n        f.scheduled_departure,\n        f.scheduled_arrival,\n        f.actual_departure,\n        f.actual_arrival\n    from tickets t\n    left join segments s on t.ticket_no = s.ticket_no\n    left join flights f on s.flight_id = f.flight_id\n\n)\n\nselect * from ticket_details"
+    },
+    "model.flight_information.int_flight_routes_info": {
+      "unique_id": "model.flight_information.int_flight_routes_info",
+      "name": "int_flight_routes_info",
+      "resource_type": "model",
+      "database": "postgres",
+      "schema": "intermediate",
+      "relation_name": "\"postgres\".\"intermediate\".\"int_flight_routes_info\"",
+      "columns": {
+        "flight_id": {
+          "name": "flight_id",
+          "data_type": null
+        },
+        "route_no": {
+          "name": "route_no",
+          "data_type": null
+        },
+        "flight_status": {
+          "name": "flight_status",
+          "data_type": null
+        },
+        "departure_airport": {
+          "name": "departure_airport",
+          "data_type": null
+        },
+        "arrival_airport": {
+          "name": "arrival_airport",
+          "data_type": null
+        },
+        "airplane_code": {
+          "name": "airplane_code",
+          "data_type": null
+        },
+        "duration": {
+          "name": "duration",
+          "data_type": null
+        }
+      },
+      "depends_on": {
+        "macros": [],
+        "nodes": [
+          "model.flight_information.stg_flights",
+          "model.flight_information.stg_routes"
+        ]
+      },
+      "refs": [
+        {
+          "name": "stg_flights",
+          "package": null,
+          "version": null
+        },
+        {
+          "name": "stg_routes",
+          "package": null,
+          "version": null
+        }
+      ],
+      "sources": [],
+      "raw_code": "with flights as (\n\n    select * from {{ ref('stg_flights') }}\n\n),\n\nroutes as (\n\n    select * from {{ ref('stg_routes') }}\n\n),\n\nflight_routes as (\n\n    select\n        f.flight_id,\n        f.route_no,\n        f.status as flight_status,\n        r.departure_airport,\n        r.arrival_airport,\n        r.airplane_code,\n        r.duration\n    from flights f\n    left join routes r on f.route_no = r.route_no\n\n)\n\nselect * from flight_routes",
+      "compiled_code": "with flights as (\n\n    select * from \"postgres\".\"staging\".\"stg_flights\"\n\n),\n\nroutes as (\n\n    select * from \"postgres\".\"staging\".\"stg_routes\"\n\n),\n\nflight_routes as (\n\n    select\n        f.flight_id,\n        f.route_no,\n        f.status as flight_status,\n        r.departure_airport,\n        r.arrival_airport,\n        r.airplane_code,\n        r.duration\n    from flights f\n    left join routes r on f.route_no = r.route_no\n\n)\n\nselect * from flight_routes"
+    },
+    "model.flight_information.int_flight_type": {
+      "unique_id": "model.flight_information.int_flight_type",
+      "name": "int_flight_type",
+      "resource_type": "model",
+      "database": "postgres",
+      "schema": "intermediate",
+      "relation_name": "\"postgres\".\"intermediate\".\"int_flight_type\"",
+      "columns": {
+        "flight_id": {
+          "name": "flight_id",
+          "data_type": null
+        },
+        "route_no": {
+          "name": "route_no",
+          "data_type": null
+        },
+        "flight_status": {
+          "name": "flight_status",
+          "data_type": null
+        },
+        "scheduled_departure": {
+          "name": "scheduled_departure",
+          "data_type": null
+        },
+        "scheduled_arrival": {
+          "name": "scheduled_arrival",
+          "data_type": null
+        },
+        "actual_departure": {
+          "name": "actual_departure",
+          "data_type": null
+        },
+        "actual_arrival": {
+          "name": "actual_arrival",
+          "data_type": null
+        },
+        "flight_type": {
+          "name": "flight_type",
+          "data_type": null
+        }
+      },
+      "depends_on": {
+        "macros": [
+          "macro.flight_information.generate_flight_type"
+        ],
+        "nodes": [
+          "model.flight_information.int_ticket_information"
+        ]
+      },
+      "refs": [
+        {
+          "name": "int_ticket_information",
+          "package": null,
+          "version": null
+        }
+      ],
+      "sources": [],
+      "raw_code": "with ticket_information as (\n\n    select * from {{ ref('int_ticket_information') }}\n\n),\n\nflight_type as (\n\n    select\n        flight_id,\n        route_no,\n        flight_status,\n        scheduled_departure,\n        scheduled_arrival,\n        actual_departure,\n        actual_arrival,\n        {{ generate_flight_type('actual_departure', 'actual_arrival') }} as flight_type\n    from ticket_information\n\n)\n\nselect * from flight_type",
+      "compiled_code": "with ticket_information as (\n\n    select * from \"postgres\".\"intermediate\".\"int_ticket_information\"\n\n),\n\nflight_type as (\n\n    select\n        flight_id,\n        route_no,\n        flight_status,\n        scheduled_departure,\n        scheduled_arrival,\n        actual_departure,\n        actual_arrival,\n        \n    case\n        when actual_departure is null or actual_arrival is null then null\n        when extract(epoch from (actual_arrival::timestamp - actual_departure::timestamp)) / 3600 <= 1 then 'short flight'\n        when extract(epoch from (actual_arrival::timestamp - actual_departure::timestamp)) / 3600 <= 5 then 'average flight'\n        else 'long flight'\n    end\n as flight_type\n    from ticket_information\n\n)\n\nselect * from flight_type"
+    },
+    "model.flight_information.int_bookings_distribution": {
+      "unique_id": "model.flight_information.int_bookings_distribution",
+      "name": "int_bookings_distribution",
+      "resource_type": "model",
+      "database": "postgres",
+      "schema": "intermediate",
+      "relation_name": "\"postgres\".\"intermediate\".\"int_bookings_distribution\"",
+      "columns": {
+        "booking_hour": {
+          "name": "booking_hour",
+          "data_type": null
+        },
+        "booking_count": {
+          "name": "booking_count",
+          "data_type": null
+        },
+        "total_revenue": {
+          "name": "total_revenue",
+          "data_type": null
+        },
+        "avg_booking_amount": {
+          "name": "avg_booking_amount",
+          "data_type": null
+        }
+      },
+      "depends_on": {
+        "macros": [],
+        "nodes": [
+          "model.flight_information.stg_bookings"
+        ]
+      },
+      "refs": [
+        {
+          "name": "stg_bookings",
+          "package": null,
+          "version": null
+        }
+      ],
+      "sources": [],
+      "raw_code": "with bookings as (\n\n    select * from {{ ref('stg_bookings') }}\n\n),\n\nbookings_distribution as (\n\n    select\n        extract(hour from book_date) as booking_hour,\n        count(*) as booking_count,\n        sum(total_amount) as total_revenue,\n        avg(total_amount) as avg_booking_amount\n    from bookings\n    group by extract(hour from book_date)\n    order by booking_hour\n\n)\n\nselect * from bookings_distribution",
+      "compiled_code": "with bookings as (\n\n    select * from \"postgres\".\"staging\".\"stg_bookings\"\n\n),\n\nbookings_distribution as (\n\n    select\n        extract(hour from book_date) as booking_hour,\n        count(*) as booking_count,\n        sum(total_amount) as total_revenue,\n        avg(total_amount) as avg_booking_amount\n    from bookings\n    group by extract(hour from book_date)\n    order by booking_hour\n\n)\n\nselect * from bookings_distribution"
+    }
+  },
+  "sources": {
+    "source.flight_information.postgres.bookings": {
+      "unique_id": "source.flight_information.postgres.bookings",
+      "name": "bookings",
+      "resource_type": "source",
+      "database": "postgres",
+      "schema": "flight_info",
+      "relation_name": "\"postgres\".\"flight_info\".\"bookings\"",
+      "columns": {},
+      "depends_on": null,
+      "refs": null,
+      "sources": null,
+      "raw_code": null,
+      "compiled_code": null
+    },
+    "source.flight_information.postgres.flights": {
+      "unique_id": "source.flight_information.postgres.flights",
+      "name": "flights",
+      "resource_type": "source",
+      "database": "postgres",
+      "schema": "flight_info",
+      "relation_name": "\"postgres\".\"flight_info\".\"flights\"",
+      "columns": {},
+      "depends_on": null,
+      "refs": null,
+      "sources": null,
+      "raw_code": null,
+      "compiled_code": null
+    },
+    "source.flight_information.postgres.routes": {
+      "unique_id": "source.flight_information.postgres.routes",
+      "name": "routes",
+      "resource_type": "source",
+      "database": "postgres",
+      "schema": "flight_info",
+      "relation_name": "\"postgres\".\"flight_info\".\"routes\"",
+      "columns": {},
+      "depends_on": null,
+      "refs": null,
+      "sources": null,
+      "raw_code": null,
+      "compiled_code": null
+    },
+    "source.flight_information.postgres.segments": {
+      "unique_id": "source.flight_information.postgres.segments",
+      "name": "segments",
+      "resource_type": "source",
+      "database": "postgres",
+      "schema": "flight_info",
+      "relation_name": "\"postgres\".\"flight_info\".\"segments\"",
+      "columns": {},
+      "depends_on": null,
+      "refs": null,
+      "sources": null,
+      "raw_code": null,
+      "compiled_code": null
+    },
+    "source.flight_information.postgres.tickets": {
+      "unique_id": "source.flight_information.postgres.tickets",
+      "name": "tickets",
+      "resource_type": "source",
+      "database": "postgres",
+      "schema": "flight_info",
+      "relation_name": "\"postgres\".\"flight_info\".\"tickets\"",
+      "columns": {},
+      "depends_on": null,
+      "refs": null,
+      "sources": null,
+      "raw_code": null,
+      "compiled_code": null
+    },
+    "source.flight_information.postgres.boarding_passes": {
+      "unique_id": "source.flight_information.postgres.boarding_passes",
+      "name": "boarding_passes",
+      "resource_type": "source",
+      "database": "postgres",
+      "schema": "flight_info",
+      "relation_name": "\"postgres\".\"flight_info\".\"boarding_passes\"",
+      "columns": {},
+      "depends_on": null,
+      "refs": null,
+      "sources": null,
+      "raw_code": null,
+      "compiled_code": null
+    }
+  },
+  "parent_map": {
+    "model.flight_information.stg_boarding_passes": [
+      "source.flight_information.postgres.boarding_passes"
+    ],
+    "model.flight_information.stg_segments": [
+      "source.flight_information.postgres.segments"
+    ],
+    "model.flight_information.stg_routes": [
+      "source.flight_information.postgres.routes"
+    ],
+    "model.flight_information.stg_tickets": [
+      "source.flight_information.postgres.tickets"
+    ],
+    "model.flight_information.stg_flights": [
+      "source.flight_information.postgres.flights"
+    ],
+    "model.flight_information.stg_bookings": [
+      "source.flight_information.postgres.bookings"
+    ],
+    "model.flight_information.bookings": [
+      "model.flight_information.stg_bookings"
+    ],
+    "model.flight_information.flight_type": [
+      "model.flight_information.int_flight_type"
+    ],
+    "model.flight_information.ticket_information": [
+      "model.flight_information.int_ticket_information"
+    ],
+    "model.flight_information.int_flight_boarding": [
+      "model.flight_information.stg_boarding_passes",
+      "model.flight_information.stg_flights"
+    ],
+    "model.flight_information.int_ticket_information": [
+      "model.flight_information.stg_flights",
+      "model.flight_information.stg_segments",
+      "model.flight_information.stg_tickets"
+    ],
+    "model.flight_information.int_flight_routes_info": [
+      "model.flight_information.stg_flights",
+      "model.flight_information.stg_routes"
+    ],
+    "model.flight_information.int_flight_type": [
+      "model.flight_information.int_ticket_information"
+    ],
+    "model.flight_information.int_bookings_distribution": [
+      "model.flight_information.stg_bookings"
+    ],
+    "source.flight_information.postgres.bookings": [],
+    "source.flight_information.postgres.flights": [],
+    "source.flight_information.postgres.routes": [],
+    "source.flight_information.postgres.segments": [],
+    "source.flight_information.postgres.tickets": [],
+    "source.flight_information.postgres.boarding_passes": []
+  },
+  "child_map": {
+    "model.flight_information.stg_boarding_passes": [
+      "model.flight_information.int_flight_boarding"
+    ],
+    "model.flight_information.stg_segments": [
+      "model.flight_information.int_ticket_information"
+    ],
+    "model.flight_information.stg_routes": [
+      "model.flight_information.int_flight_routes_info"
+    ],
+    "model.flight_information.stg_tickets": [
+      "model.flight_information.int_ticket_information"
+    ],
+    "model.flight_information.stg_flights": [
+      "model.flight_information.int_flight_boarding",
+      "model.flight_information.int_flight_routes_info",
+      "model.flight_information.int_ticket_information"
+    ],
+    "model.flight_information.stg_bookings": [
+      "model.flight_information.bookings",
+      "model.flight_information.int_bookings_distribution"
+    ],
+    "model.flight_information.bookings": [],
+    "model.flight_information.flight_type": [],
+    "model.flight_information.ticket_information": [],
+    "model.flight_information.int_flight_boarding": [],
+    "model.flight_information.int_ticket_information": [
+      "model.flight_information.int_flight_type",
+      "model.flight_information.ticket_information"
+    ],
+    "model.flight_information.int_flight_routes_info": [],
+    "model.flight_information.int_flight_type": [
+      "model.flight_information.flight_type"
+    ],
+    "model.flight_information.int_bookings_distribution": [],
+    "source.flight_information.postgres.bookings": [
+      "model.flight_information.stg_bookings"
+    ],
+    "source.flight_information.postgres.flights": [
+      "model.flight_information.stg_flights"
+    ],
+    "source.flight_information.postgres.routes": [
+      "model.flight_information.stg_routes"
+    ],
+    "source.flight_information.postgres.segments": [
+      "model.flight_information.stg_segments"
+    ],
+    "source.flight_information.postgres.tickets": [
+      "model.flight_information.stg_tickets"
+    ],
+    "source.flight_information.postgres.boarding_passes": [
+      "model.flight_information.stg_boarding_passes"
+    ]
+  }
+}
