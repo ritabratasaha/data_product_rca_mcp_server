@@ -17,4 +17,4 @@ ENV PROMETHEUS_PORT=9090
 EXPOSE 8000
 EXPOSE 9090
 
-CMD ["lineage-server"]
+CMD ["rca-server"]

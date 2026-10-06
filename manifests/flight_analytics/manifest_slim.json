@@ -1,0 +1,743 @@
+{
+  "nodes": {
+    "model.flight_analytics.stg_boarding_passes": {
+      "unique_id": "model.flight_analytics.stg_boarding_passes",
+      "name": "stg_boarding_passes",
+      "resource_type": "model",
+      "database": "FLIGHT_ANALYTICS",
+      "schema": "staging",
+      "relation_name": "FLIGHT_ANALYTICS.staging.stg_boarding_passes",
+      "columns": {
+        "ticket_no": {
+          "name": "ticket_no",
+          "data_type": null
+        },
+        "flight_id": {
+          "name": "flight_id",
+          "data_type": null
+        },
+        "seat_no": {
+          "name": "seat_no",
+          "data_type": null
+        },
+        "boarding_no": {
+          "name": "boarding_no",
+          "data_type": null
+        },
+        "boarding_time": {
+          "name": "boarding_time",
+          "data_type": null
+        },
+        "boarding_date": {
+          "name": "boarding_date",
+          "data_type": null
+        },
+        "_run_id": {
+          "name": "_run_id",
+          "data_type": null
+        },
+        "_loaded_at": {
+          "name": "_loaded_at",
+          "data_type": null
+        }
+      },
+      "depends_on": {
+        "macros": [],
+        "nodes": [
+          "source.flight_analytics.snowflake.boarding_passes"
+        ]
+      },
+      "description": "Staged boarding passes data from the flight_info schema (incremental merge by processing_date)",
+      "compiled_code": "\n\nwith source as (\n\n    select * from FLIGHT_INFORMATION.BOOKINGS.boarding_passes\n    where boarding_time::date = '2025-10-02'\n\n),\n\nrenamed as (\n\n    select\n        ticket_no,\n        flight_id,\n        seat_no,\n        boarding_no,\n        boarding_time,\n        boarding_time::date as boarding_date,\n        '2593b5f1-252a-4cc2-97fd-52bc3e4dcdd3' as _run_id,\n        current_timestamp() as _loaded_at\n    from source\n\n)\n\nselect * from renamed"
+    },
+    "model.flight_analytics.stg_segments": {
+      "unique_id": "model.flight_analytics.stg_segments",
+      "name": "stg_segments",
+      "resource_type": "model",
+      "database": "FLIGHT_ANALYTICS",
+      "schema": "staging",
+      "relation_name": "FLIGHT_ANALYTICS.staging.stg_segments",
+      "columns": {
+        "ticket_no": {
+          "name": "ticket_no",
+          "data_type": null
+        },
+        "flight_id": {
+          "name": "flight_id",
+          "data_type": null
+        },
+        "fare_conditions": {
+          "name": "fare_conditions",
+          "data_type": null
+        },
+        "price": {
+          "name": "price",
+          "data_type": null
+        }
+      },
+      "depends_on": {
+        "macros": [],
+        "nodes": [
+          "source.flight_analytics.snowflake.segments"
+        ]
+      },
+      "description": "Staged segments data from the flight_info schema",
+      "compiled_code": "\n\nwith source as (\n\n    select * from FLIGHT_INFORMATION.BOOKINGS.segments\n\n),\n\nrenamed as (\n\n    select\n        ticket_no,\n        flight_id,\n        fare_conditions,\n        price\n    from source\n\n)\n\nselect * from renamed"
+    },
+    "model.flight_analytics.stg_routes": {
+      "unique_id": "model.flight_analytics.stg_routes",
+      "name": "stg_routes",
+      "resource_type": "model",
+      "database": "FLIGHT_ANALYTICS",
+      "schema": "staging",
+      "relation_name": "FLIGHT_ANALYTICS.staging.stg_routes",
+      "columns": {
+        "route_no": {
+          "name": "route_no",
+          "data_type": null
+        },
+        "validity": {
+          "name": "validity",
+          "data_type": null
+        },
+        "departure_airport": {
+          "name": "departure_airport",
+          "data_type": null
+        },
+        "arrival_airport": {
+          "name": "arrival_airport",
+          "data_type": null
+        },
+        "airplane_code": {
+          "name": "airplane_code",
+          "data_type": null
+        },
+        "days_of_week": {
+          "name": "days_of_week",
+          "data_type": null
+        },
+        "scheduled_time": {
+          "name": "scheduled_time",
+          "data_type": null
+        },
+        "duration": {
+          "name": "duration",
+          "data_type": null
+        }
+      },
+      "depends_on": {
+        "macros": [],
+        "nodes": [
+          "source.flight_analytics.snowflake.routes"
+        ]
+      },
+      "description": "Staged routes data from the flight_info schema",
+      "compiled_code": "\n\nwith source as (\n\n    select * from FLIGHT_INFORMATION.BOOKINGS.routes\n\n),\n\nrenamed as (\n\n    select\n        route_no,\n        validity,\n        departure_airport,\n        arrival_airport,\n        airplane_code,\n        days_of_week,\n        scheduled_time,\n        duration\n    from source\n\n)\n\nselect * from renamed"
+    },
+    "model.flight_analytics.stg_tickets": {
+      "unique_id": "model.flight_analytics.stg_tickets",
+      "name": "stg_tickets",
+      "resource_type": "model",
+      "database": "FLIGHT_ANALYTICS",
+      "schema": "staging",
+      "relation_name": "FLIGHT_ANALYTICS.staging.stg_tickets",
+      "columns": {
+        "ticket_no": {
+          "name": "ticket_no",
+          "data_type": null
+        },
+        "book_ref": {
+          "name": "book_ref",
+          "data_type": null
+        },
+        "passenger_id": {
+          "name": "passenger_id",
+          "data_type": null
+        },
+        "passenger_name": {
+          "name": "passenger_name",
+          "data_type": null
+        },
+        "outbound": {
+          "name": "outbound",
+          "data_type": null
+        },
+        "_run_id": {
+          "name": "_run_id",
+          "data_type": null
+        },
+        "_loaded_at": {
+          "name": "_loaded_at",
+          "data_type": null
+        }
+      },
+      "depends_on": {
+        "macros": [],
+        "nodes": [
+          "source.flight_analytics.snowflake.tickets",
+          "model.flight_analytics.stg_bookings"
+        ]
+      },
+      "description": "Staged tickets data from the flight_info schema (incremental merge by processing_date)",
+      "compiled_code": "\n\nwith bookings as (\n\n    select distinct book_ref \n    from FLIGHT_ANALYTICS.staging.stg_bookings\n    where date(book_date) = '2025-10-02'::date\n\n),\n\nsource as (\n\n    select * from FLIGHT_INFORMATION.BOOKINGS.tickets\n    where book_ref in (select book_ref from bookings)\n\n),\n\nrenamed as (\n\n    select\n        ticket_no,\n        book_ref,\n        passenger_id,\n        passenger_name,\n        outbound,\n        '2593b5f1-252a-4cc2-97fd-52bc3e4dcdd3' as _run_id,\n        current_timestamp() as _loaded_at\n    from source\n\n)\n\nselect * from renamed"
+    },
+    "model.flight_analytics.stg_flights": {
+      "unique_id": "model.flight_analytics.stg_flights",
+      "name": "stg_flights",
+      "resource_type": "model",
+      "database": "FLIGHT_ANALYTICS",
+      "schema": "staging",
+      "relation_name": "FLIGHT_ANALYTICS.staging.stg_flights",
+      "columns": {
+        "flight_id": {
+          "name": "flight_id",
+          "data_type": null
+        },
+        "route_no": {
+          "name": "route_no",
+          "data_type": null
+        },
+        "status": {
+          "name": "status",
+          "data_type": null
+        },
+        "scheduled_departure": {
+          "name": "scheduled_departure",
+          "data_type": null
+        },
+        "scheduled_arrival": {
+          "name": "scheduled_arrival",
+          "data_type": null
+        },
+        "actual_departure": {
+          "name": "actual_departure",
+          "data_type": null
+        },
+        "actual_arrival": {
+          "name": "actual_arrival",
+          "data_type": null
+        },
+        "_run_id": {
+          "name": "_run_id",
+          "data_type": null
+        },
+        "_loaded_at": {
+          "name": "_loaded_at",
+          "data_type": null
+        }
+      },
+      "depends_on": {
+        "macros": [],
+        "nodes": [
+          "source.flight_analytics.snowflake.flights",
+          "model.flight_analytics.stg_boarding_passes"
+        ]
+      },
+      "description": "Staged flights data from the flight_info schema (incremental merge by processing_date)",
+      "compiled_code": "\n\nwith boarding_passes as (\n\n    select distinct flight_id \n    from FLIGHT_ANALYTICS.staging.stg_boarding_passes\n    where boarding_date = '2025-10-02'::date\n\n),\n\nsource as (\n\n    select * from FLIGHT_INFORMATION.BOOKINGS.flights\n    where flight_id in (select flight_id from boarding_passes)\n\n),\n\nrenamed as (\n\n    select\n        flight_id,\n        route_no,\n        status,\n        scheduled_departure,\n        scheduled_arrival,\n        actual_departure,\n        actual_arrival,\n        '2593b5f1-252a-4cc2-97fd-52bc3e4dcdd3' as _run_id,\n        current_timestamp() as _loaded_at\n    from source\n\n)\n\nselect * from renamed"
+    },
+    "model.flight_analytics.stg_bookings": {
+      "unique_id": "model.flight_analytics.stg_bookings",
+      "name": "stg_bookings",
+      "resource_type": "model",
+      "database": "FLIGHT_ANALYTICS",
+      "schema": "staging",
+      "relation_name": "FLIGHT_ANALYTICS.staging.stg_bookings",
+      "columns": {
+        "book_ref": {
+          "name": "book_ref",
+          "data_type": null
+        },
+        "book_date": {
+          "name": "book_date",
+          "data_type": null
+        },
+        "total_amount": {
+          "name": "total_amount",
+          "data_type": null
+        },
+        "_run_id": {
+          "name": "_run_id",
+          "data_type": null
+        },
+        "_loaded_at": {
+          "name": "_loaded_at",
+          "data_type": null
+        }
+      },
+      "depends_on": {
+        "macros": [],
+        "nodes": [
+          "source.flight_analytics.snowflake.bookings"
+        ]
+      },
+      "description": "Staged bookings data from the flight_info schema (incremental append by processing_date)",
+      "compiled_code": "\n\nwith source as (\n\n    select * from FLIGHT_INFORMATION.BOOKINGS.bookings\n    where date(book_date) = '2025-10-02'\n\n),\n\nrenamed as (\n\n    select\n        book_ref,\n        book_date,\n        total_amount,\n        '2593b5f1-252a-4cc2-97fd-52bc3e4dcdd3' as _run_id,\n        current_timestamp() as _loaded_at\n    from source\n\n)\n\nselect * from renamed"
+    },
+    "model.flight_analytics.bookings": {
+      "unique_id": "model.flight_analytics.bookings",
+      "name": "bookings",
+      "resource_type": "model",
+      "database": "FLIGHT_ANALYTICS",
+      "schema": "marts",
+      "relation_name": "FLIGHT_ANALYTICS.marts.bookings",
+      "columns": {
+        "book_ref": {
+          "name": "book_ref",
+          "data_type": null
+        },
+        "book_date": {
+          "name": "book_date",
+          "data_type": null
+        },
+        "total_amount": {
+          "name": "total_amount",
+          "data_type": null
+        },
+        "booking_date": {
+          "name": "booking_date",
+          "data_type": null
+        },
+        "booking_year": {
+          "name": "booking_year",
+          "data_type": null
+        },
+        "booking_month": {
+          "name": "booking_month",
+          "data_type": null
+        },
+        "_run_id": {
+          "name": "_run_id",
+          "data_type": null
+        },
+        "_loaded_at": {
+          "name": "_loaded_at",
+          "data_type": null
+        }
+      },
+      "depends_on": {
+        "macros": [],
+        "nodes": [
+          "model.flight_analytics.stg_bookings"
+        ]
+      },
+      "description": "Fact table for bookings with date dimensions",
+      "compiled_code": "with bookings as (\n\n    select * from FLIGHT_ANALYTICS.staging.stg_bookings\n\n),\n\nfinal as (\n\n    select\n        book_ref,\n        book_date,\n        total_amount,\n        date(book_date) as booking_date,\n        extract(year from book_date) as booking_year,\n        extract(month from book_date) as booking_month,\n        _run_id,\n        _loaded_at\n    from bookings\n\n)\n\nselect * from final"
+    },
+    "model.flight_analytics.flights": {
+      "unique_id": "model.flight_analytics.flights",
+      "name": "flights",
+      "resource_type": "model",
+      "database": "FLIGHT_ANALYTICS",
+      "schema": "marts",
+      "relation_name": "FLIGHT_ANALYTICS.marts.flights",
+      "columns": {
+        "flight_id": {
+          "name": "flight_id",
+          "data_type": null
+        },
+        "route_no": {
+          "name": "route_no",
+          "data_type": null
+        },
+        "flight_status": {
+          "name": "flight_status",
+          "data_type": null
+        },
+        "scheduled_departure": {
+          "name": "scheduled_departure",
+          "data_type": null
+        },
+        "scheduled_arrival": {
+          "name": "scheduled_arrival",
+          "data_type": null
+        },
+        "actual_departure": {
+          "name": "actual_departure",
+          "data_type": null
+        },
+        "actual_arrival": {
+          "name": "actual_arrival",
+          "data_type": null
+        },
+        "ticket_no": {
+          "name": "ticket_no",
+          "data_type": null
+        },
+        "seat_no": {
+          "name": "seat_no",
+          "data_type": null
+        },
+        "boarding_no": {
+          "name": "boarding_no",
+          "data_type": null
+        },
+        "boarding_time": {
+          "name": "boarding_time",
+          "data_type": null
+        },
+        "flight_distance_type": {
+          "name": "flight_distance_type",
+          "data_type": null
+        }
+      },
+      "depends_on": {
+        "macros": [],
+        "nodes": [
+          "model.flight_analytics.int_flight_boarding"
+        ]
+      },
+      "description": "Detailed flight information with boarding pass details",
+      "compiled_code": "with flight_boarding as (\n\n    select * from FLIGHT_ANALYTICS.intermediate.int_flight_boarding\n\n),\n\nfinal as (\n\n    select\n        flight_id,\n        route_no,\n        flight_status,\n        scheduled_departure,\n        scheduled_arrival,\n        actual_departure,\n        actual_arrival,\n        ticket_no,\n        seat_no,\n        boarding_no,\n        boarding_time,\n        flight_distance_type\n    from flight_boarding\n\n)\n\nselect * from final"
+    },
+    "model.flight_analytics.ticket_snapshot": {
+      "unique_id": "model.flight_analytics.ticket_snapshot",
+      "name": "ticket_snapshot",
+      "resource_type": "model",
+      "database": "FLIGHT_ANALYTICS",
+      "schema": "marts",
+      "relation_name": "FLIGHT_ANALYTICS.marts.ticket_snapshot",
+      "columns": {
+        "ticket_no": {
+          "name": "ticket_no",
+          "data_type": null
+        },
+        "book_ref": {
+          "name": "book_ref",
+          "data_type": null
+        },
+        "passenger_id": {
+          "name": "passenger_id",
+          "data_type": null
+        },
+        "passenger_name": {
+          "name": "passenger_name",
+          "data_type": null
+        },
+        "outbound": {
+          "name": "outbound",
+          "data_type": null
+        },
+        "book_date": {
+          "name": "book_date",
+          "data_type": null
+        },
+        "total_amount": {
+          "name": "total_amount",
+          "data_type": null
+        },
+        "is_orphan_booking": {
+          "name": "is_orphan_booking",
+          "data_type": null
+        },
+        "snapshot_date": {
+          "name": "snapshot_date",
+          "data_type": null
+        },
+        "_run_id": {
+          "name": "_run_id",
+          "data_type": null
+        },
+        "_loaded_at": {
+          "name": "_loaded_at",
+          "data_type": null
+        }
+      },
+      "depends_on": {
+        "macros": [],
+        "nodes": [
+          "model.flight_analytics.int_ticket_snapshot"
+        ]
+      },
+      "description": "View for querying daily ticket snapshots with orphan ticket flag",
+      "compiled_code": "with snapshot as (\n\n    select * from FLIGHT_ANALYTICS.intermediate.int_ticket_snapshot\n\n)\n\nselect\n    ticket_no,\n    book_ref,\n    passenger_id,\n    passenger_name,\n    outbound,\n    book_date,\n    total_amount,\n    is_orphan_booking,\n    snapshot_date,\n    _run_id,\n    _loaded_at\nfrom snapshot"
+    },
+    "model.flight_analytics.int_flight_boarding": {
+      "unique_id": "model.flight_analytics.int_flight_boarding",
+      "name": "int_flight_boarding",
+      "resource_type": "model",
+      "database": "FLIGHT_ANALYTICS",
+      "schema": "intermediate",
+      "relation_name": "FLIGHT_ANALYTICS.intermediate.int_flight_boarding",
+      "columns": {
+        "flight_id": {
+          "name": "flight_id",
+          "data_type": null
+        },
+        "route_no": {
+          "name": "route_no",
+          "data_type": null
+        },
+        "flight_status": {
+          "name": "flight_status",
+          "data_type": null
+        },
+        "scheduled_departure": {
+          "name": "scheduled_departure",
+          "data_type": null
+        },
+        "scheduled_arrival": {
+          "name": "scheduled_arrival",
+          "data_type": null
+        },
+        "actual_departure": {
+          "name": "actual_departure",
+          "data_type": null
+        },
+        "actual_arrival": {
+          "name": "actual_arrival",
+          "data_type": null
+        },
+        "ticket_no": {
+          "name": "ticket_no",
+          "data_type": null
+        },
+        "seat_no": {
+          "name": "seat_no",
+          "data_type": null
+        },
+        "boarding_no": {
+          "name": "boarding_no",
+          "data_type": null
+        },
+        "boarding_time": {
+          "name": "boarding_time",
+          "data_type": null
+        },
+        "flight_distance_type": {
+          "name": "flight_distance_type",
+          "data_type": null
+        }
+      },
+      "depends_on": {
+        "macros": [
+          "macro.flight_analytics.generate_flight_type"
+        ],
+        "nodes": [
+          "model.flight_analytics.stg_flights",
+          "model.flight_analytics.stg_boarding_passes"
+        ]
+      },
+      "description": "Intermediate model joining flights with boarding pass details",
+      "compiled_code": "with flights as (\n\n    select * from FLIGHT_ANALYTICS.staging.stg_flights\n\n),\n\nboarding_passes as (\n\n    select * from FLIGHT_ANALYTICS.staging.stg_boarding_passes\n\n),\n\nflight_boarding_details as (\n\n    select\n        f.flight_id,\n        f.route_no,\n        f.status as flight_status,\n        f.scheduled_departure,\n        f.scheduled_arrival,\n        f.actual_departure,\n        f.actual_arrival,\n        bp.ticket_no,\n        bp.seat_no,\n        bp.boarding_no,\n        bp.boarding_time,\n        \n    case\n        when actual_departure is null or actual_arrival is null then null\n        when datediff('second', actual_departure, actual_arrival) / 3600 <= 1 then 'short flight'\n        when datediff('second', actual_departure, actual_arrival) / 3600 <= 5 then 'average flight'\n        else 'long flight'\n    end\n as flight_distance_type\n    from flights f\n    left join boarding_passes bp on f.flight_id = bp.flight_id\n\n)\n\nselect * from flight_boarding_details"
+    },
+    "model.flight_analytics.int_flight_routes_info": {
+      "unique_id": "model.flight_analytics.int_flight_routes_info",
+      "name": "int_flight_routes_info",
+      "resource_type": "model",
+      "database": "FLIGHT_ANALYTICS",
+      "schema": "intermediate",
+      "relation_name": "FLIGHT_ANALYTICS.intermediate.int_flight_routes_info",
+      "columns": {
+        "flight_id": {
+          "name": "flight_id",
+          "data_type": null
+        },
+        "route_no": {
+          "name": "route_no",
+          "data_type": null
+        },
+        "flight_status": {
+          "name": "flight_status",
+          "data_type": null
+        },
+        "departure_airport": {
+          "name": "departure_airport",
+          "data_type": null
+        },
+        "arrival_airport": {
+          "name": "arrival_airport",
+          "data_type": null
+        },
+        "airplane_code": {
+          "name": "airplane_code",
+          "data_type": null
+        },
+        "duration": {
+          "name": "duration",
+          "data_type": null
+        }
+      },
+      "depends_on": {
+        "macros": [],
+        "nodes": [
+          "model.flight_analytics.stg_flights",
+          "model.flight_analytics.stg_routes"
+        ]
+      },
+      "description": "Intermediate model joining flights with route information including departure and arrival airports",
+      "compiled_code": "with flights as (\n\n    select * from FLIGHT_ANALYTICS.staging.stg_flights\n\n),\n\nroutes as (\n\n    select * from FLIGHT_ANALYTICS.staging.stg_routes\n\n),\n\nflight_routes as (\n\n    select\n        f.flight_id,\n        f.route_no,\n        f.status as flight_status,\n        r.departure_airport,\n        r.arrival_airport,\n        r.airplane_code,\n        r.duration\n    from flights f\n    left join routes r on f.route_no = r.route_no\n\n)\n\nselect * from flight_routes"
+    },
+    "model.flight_analytics.int_bookings_distribution": {
+      "unique_id": "model.flight_analytics.int_bookings_distribution",
+      "name": "int_bookings_distribution",
+      "resource_type": "model",
+      "database": "FLIGHT_ANALYTICS",
+      "schema": "intermediate",
+      "relation_name": "FLIGHT_ANALYTICS.intermediate.int_bookings_distribution",
+      "columns": {
+        "booking_hour": {
+          "name": "booking_hour",
+          "data_type": null
+        },
+        "booking_count": {
+          "name": "booking_count",
+          "data_type": null
+        },
+        "total_revenue": {
+          "name": "total_revenue",
+          "data_type": null
+        },
+        "avg_booking_amount": {
+          "name": "avg_booking_amount",
+          "data_type": null
+        }
+      },
+      "depends_on": {
+        "macros": [],
+        "nodes": [
+          "model.flight_analytics.stg_bookings"
+        ]
+      },
+      "description": "Hourly distribution of booking volume and revenue",
+      "compiled_code": "with bookings as (\n\n    select * from FLIGHT_ANALYTICS.staging.stg_bookings\n\n),\n\nbookings_distribution as (\n\n    select\n        extract(hour from book_date) as booking_hour,\n        count(*) as booking_count,\n        sum(total_amount) as total_revenue,\n        avg(total_amount) as avg_booking_amount\n    from bookings\n    group by extract(hour from book_date)\n    order by booking_hour\n\n)\n\nselect * from bookings_distribution"
+    },
+    "model.flight_analytics.int_ticket_snapshot": {
+      "unique_id": "model.flight_analytics.int_ticket_snapshot",
+      "name": "int_ticket_snapshot",
+      "resource_type": "model",
+      "database": "FLIGHT_ANALYTICS",
+      "schema": "intermediate",
+      "relation_name": "FLIGHT_ANALYTICS.intermediate.int_ticket_snapshot",
+      "columns": {
+        "ticket_no": {
+          "name": "ticket_no",
+          "data_type": null
+        },
+        "book_ref": {
+          "name": "book_ref",
+          "data_type": null
+        },
+        "passenger_id": {
+          "name": "passenger_id",
+          "data_type": null
+        },
+        "passenger_name": {
+          "name": "passenger_name",
+          "data_type": null
+        },
+        "outbound": {
+          "name": "outbound",
+          "data_type": null
+        },
+        "book_date": {
+          "name": "book_date",
+          "data_type": null
+        },
+        "total_amount": {
+          "name": "total_amount",
+          "data_type": null
+        },
+        "is_orphan_booking": {
+          "name": "is_orphan_booking",
+          "data_type": null
+        },
+        "snapshot_date": {
+          "name": "snapshot_date",
+          "data_type": null
+        },
+        "_run_id": {
+          "name": "_run_id",
+          "data_type": null
+        },
+        "_loaded_at": {
+          "name": "_loaded_at",
+          "data_type": null
+        }
+      },
+      "depends_on": {
+        "macros": [],
+        "nodes": [
+          "model.flight_analytics.stg_bookings",
+          "model.flight_analytics.stg_tickets"
+        ]
+      },
+      "description": "Daily ticket snapshot that accumulates ticket data for each processing_date (incremental append)",
+      "compiled_code": "\n\nwith snapshot as (\n\n    select\n        t.ticket_no,\n        b.book_ref,\n        t.passenger_id,\n        t.passenger_name,\n        t.outbound,\n        b.book_date,\n        b.total_amount,\n        case when t.ticket_no is null then true else false end as is_orphan_booking,\n        '2025-10-02'::date as snapshot_date,\n        '2593b5f1-252a-4cc2-97fd-52bc3e4dcdd3' as _run_id,\n        current_timestamp() as _loaded_at\n    from FLIGHT_ANALYTICS.staging.stg_bookings b\n    left join FLIGHT_ANALYTICS.staging.stg_tickets t \n        on t.book_ref = b.book_ref\n    where date(b.book_date) = '2025-10-02'::date\n\n)\n\nselect * from snapshot"
+    }
+  },
+  "sources": {
+    "source.flight_analytics.snowflake.bookings": {
+      "unique_id": "source.flight_analytics.snowflake.bookings",
+      "name": "bookings",
+      "resource_type": "source",
+      "database": "FLIGHT_INFORMATION",
+      "schema": "BOOKINGS",
+      "relation_name": "FLIGHT_INFORMATION.BOOKINGS.bookings",
+      "columns": {},
+      "depends_on": null,
+      "description": "",
+      "compiled_code": null
+    },
+    "source.flight_analytics.snowflake.flights": {
+      "unique_id": "source.flight_analytics.snowflake.flights",
+      "name": "flights",
+      "resource_type": "source",
+      "database": "FLIGHT_INFORMATION",
+      "schema": "BOOKINGS",
+      "relation_name": "FLIGHT_INFORMATION.BOOKINGS.flights",
+      "columns": {},
+      "depends_on": null,
+      "description": "",
+      "compiled_code": null
+    },
+    "source.flight_analytics.snowflake.routes": {
+      "unique_id": "source.flight_analytics.snowflake.routes",
+      "name": "routes",
+      "resource_type": "source",
+      "database": "FLIGHT_INFORMATION",
+      "schema": "BOOKINGS",
+      "relation_name": "FLIGHT_INFORMATION.BOOKINGS.routes",
+      "columns": {},
+      "depends_on": null,
+      "description": "",
+      "compiled_code": null
+    },
+    "source.flight_analytics.snowflake.segments": {
+      "unique_id": "source.flight_analytics.snowflake.segments",
+      "name": "segments",
+      "resource_type": "source",
+      "database": "FLIGHT_INFORMATION",
+      "schema": "BOOKINGS",
+      "relation_name": "FLIGHT_INFORMATION.BOOKINGS.segments",
+      "columns": {},
+      "depends_on": null,
+      "description": "",
+      "compiled_code": null
+    },
+    "source.flight_analytics.snowflake.tickets": {
+      "unique_id": "source.flight_analytics.snowflake.tickets",
+      "name": "tickets",
+      "resource_type": "source",
+      "database": "FLIGHT_INFORMATION",
+      "schema": "BOOKINGS",
+      "relation_name": "FLIGHT_INFORMATION.BOOKINGS.tickets",
+      "columns": {},
+      "depends_on": null,
+      "description": "",
+      "compiled_code": null
+    },
+    "source.flight_analytics.snowflake.boarding_passes": {
+      "unique_id": "source.flight_analytics.snowflake.boarding_passes",
+      "name": "boarding_passes",
+      "resource_type": "source",
+      "database": "FLIGHT_INFORMATION",
+      "schema": "BOOKINGS",
+      "relation_name": "FLIGHT_INFORMATION.BOOKINGS.boarding_passes",
+      "columns": {},
+      "depends_on": null,
+      "description": "",
+      "compiled_code": null
+    }
+  }
+}

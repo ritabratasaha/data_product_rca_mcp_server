@@ -1,5 +1,0 @@
-"""Tools package."""
-
-from lineage_server.tools.registry import mcp, register_tools
-
-register_tools()

@@ -1,22 +1,37 @@
 services:
-  lineage-server:
+  rca-server:
     build: .
     ports:
       - "8000:8000"
       - "9090:9090"
-    container_name: dbt-lineage-server-mcp
+    container_name: data-product-rca-server-mcp
     environment:
+      - TESTING=${TESTING:-false}
+      - TESTING_SNOWFLAKE_USER=${TESTING_SNOWFLAKE_USER}
+      - TESTING_SNOWFLAKE_PASSWORD=${TESTING_SNOWFLAKE_PASSWORD}
       - MCP_TRANSPORT=http
       - MCP_HOST=0.0.0.0
       - MCP_PORT=8000
       - MANIFESTS_PATH=/app/manifests
       - PROMETHEUS_PORT=9090
       - SERVER_BASE_URL=http://localhost:8000
-      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
-      - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
+      - SNOWFLAKE_OAUTH_CLIENT_ID=${SNOWFLAKE_OAUTH_CLIENT_ID}
+      - SNOWFLAKE_OAUTH_CLIENT_SECRET=${SNOWFLAKE_OAUTH_CLIENT_SECRET}
+      - SNOWFLAKE_OAUTH_ROLES=${SNOWFLAKE_OAUTH_ROLES:-PUBLIC}
       - LANGFUSE_PUBLIC_KEY=${LANGFUSE_PUBLIC_KEY}
       - LANGFUSE_SECRET_KEY=${LANGFUSE_SECRET_KEY}
       - LANGFUSE_HOST=https://cloud.langfuse.com
+      - SNOWFLAKE_ACCOUNT=${SNOWFLAKE_ACCOUNT}
+      - SNOWFLAKE_USER=${SNOWFLAKE_USER}
+      - SNOWFLAKE_PASSWORD=${SNOWFLAKE_PASSWORD}
+      - SNOWFLAKE_ROLE=${SNOWFLAKE_ROLE}
+      - SNOWFLAKE_DATABASE=${SNOWFLAKE_DATABASE}
+      - SNOWFLAKE_WAREHOUSE=${SNOWFLAKE_WAREHOUSE}
+      - AIRFLOW_BASE_URL=http://host.docker.internal:8080
+      - AIRFLOW_USERNAME=${AIRFLOW_USERNAME}
+      - AIRFLOW_PASSWORD=${AIRFLOW_PASSWORD}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     networks:
       - monitoring
 
@@ -43,6 +58,8 @@ services:
       - GF_SECURITY_ADMIN_PASSWORD=admin
     volumes:
       - grafana_data:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning
+      - ./grafana/dashboards:/var/lib/grafana/dashboards
     depends_on:
       - prometheus
     networks:

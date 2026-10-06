@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 620" font-family="system-ui, -apple-system, sans-serif">
+  <defs>
+    <!-- Drop shadow filter -->
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="1" dy="2" stdDeviation="2" flood-opacity="0.08"/>
+    </filter>
+  </defs>
+  
+  <!-- White Background -->
+  <rect width="900" height="620" fill="#FFFFFF"/>
+  
+  <!-- ==================== TITLE (Top Center) ==================== -->
+  <text x="450" y="30" text-anchor="middle" fill="#111827" font-size="22" font-weight="700">MCP RCA Server</text>
+  <text x="450" y="48" text-anchor="middle" fill="#6B7280" font-size="12">Deployment Diagram</text>
+  <line x1="300" y1="60" x2="600" y2="60" stroke="#E5E7EB" stroke-width="1"/>
+  
+  <!-- ==================== LOCAL MACHINE BOUNDARY ==================== -->
+  <rect x="30" y="75" width="840" height="480" rx="12" fill="#FAFAFA" stroke="#D1D5DB" stroke-width="2" stroke-dasharray="8,4"/>
+  <rect x="30" y="75" width="180" height="28" rx="8" fill="#374151"/>
+  <text x="120" y="94" text-anchor="middle" fill="#fff" font-size="11" font-weight="600">Local Machine</text>
+  
+  <!-- ==================== USER LAYER - Light Indigo ==================== -->
+  <rect x="60" y="120" width="150" height="100" rx="8" fill="#EEF2FF" stroke="#C7D2FE" stroke-width="1.5" filter="url(#shadow)"/>
+  <rect x="60" y="120" width="150" height="28" rx="8" fill="#6366F1"/>
+  <rect x="60" y="142" width="150" height="6" fill="#EEF2FF"/>
+  <text x="135" y="139" text-anchor="middle" fill="#fff" font-size="11" font-weight="600">User</text>
+  
+  <rect x="75" y="160" width="120" height="26" rx="5" fill="#fff" stroke="#C7D2FE" stroke-width="1"/>
+  <text x="135" y="178" text-anchor="middle" fill="#3730A3" font-size="10">Cursor IDE</text>
+  
+  <rect x="75" y="192" width="120" height="26" rx="5" fill="#fff" stroke="#C7D2FE" stroke-width="1"/>
+  <text x="135" y="210" text-anchor="middle" fill="#3730A3" font-size="10">Terminal</text>
+  
+  <!-- Arrow: User to MCP Server -->
+  <line x1="210" y1="170" x2="280" y2="170" stroke="#94A3B8" stroke-width="1.5"/>
+  <polygon points="278,166 286,170 278,174" fill="#94A3B8"/>
+  <text x="245" y="163" text-anchor="middle" fill="#64748B" font-size="8">localhost:8000</text>
+  
+  <!-- ==================== DOCKER COMPOSE BOUNDARY - Light Sky ==================== -->
+  <rect x="290" y="120" width="560" height="260" rx="10" fill="#F0F9FF" stroke="#7DD3FC" stroke-width="1.5"/>
+  <rect x="290" y="120" width="150" height="24" rx="8" fill="#0284C7"/>
+  <text x="365" y="136" text-anchor="middle" fill="#fff" font-size="10" font-weight="600">Docker Compose</text>
+  
+  <!-- MCP Server Container - Light Teal -->
+  <rect x="310" y="160" width="200" height="200" rx="8" fill="#F0FDFA" stroke="#99F6E4" stroke-width="1.5" filter="url(#shadow)"/>
+  <rect x="310" y="160" width="200" height="28" rx="8" fill="#0D9488"/>
+  <rect x="310" y="182" width="200" height="6" fill="#F0FDFA"/>
+  <text x="410" y="179" text-anchor="middle" fill="#fff" font-size="10" font-weight="600">Lineage Server</text>
+  
+  <rect x="325" y="200" width="170" height="22" rx="4" fill="#DBEAFE" stroke="#3B82F6" stroke-width="1"/>
+  <text x="410" y="215" text-anchor="middle" fill="#1E40AF" font-size="9" font-weight="500">FastMCP Server</text>
+  
+  <rect x="325" y="230" width="170" height="22" rx="4" fill="#DBEAFE" stroke="#3B82F6" stroke-width="1"/>
+  <text x="410" y="245" text-anchor="middle" fill="#1E40AF" font-size="9" font-weight="500">8 Tools + 1 Prompt</text>
+  
+  <rect x="325" y="260" width="170" height="22" rx="4" fill="#DBEAFE" stroke="#3B82F6" stroke-width="1"/>
+  <text x="410" y="275" text-anchor="middle" fill="#1E40AF" font-size="9" font-weight="500">Snowflake OAuth</text>
+  
+  <rect x="325" y="290" width="80" height="22" rx="4" fill="#CCFBF1" stroke="#5EEAD4" stroke-width="1"/>
+  <text x="365" y="305" text-anchor="middle" fill="#0F766E" font-size="9">:8000</text>
+  
+  <rect x="415" y="290" width="80" height="22" rx="4" fill="#CCFBF1" stroke="#5EEAD4" stroke-width="1"/>
+  <text x="455" y="305" text-anchor="middle" fill="#0F766E" font-size="9">:9090</text>
+  
+  <!-- Volume mount -->
+  <rect x="325" y="320" width="170" height="30" rx="4" fill="#FEF3C7" stroke="#FCD34D" stroke-width="1"/>
+  <text x="410" y="340" text-anchor="middle" fill="#92400E" font-size="8">./manifests:/app/manifests</text>
+  
+  <!-- Prometheus Container - Light Rose -->
+  <rect x="530" y="160" width="150" height="100" rx="8" fill="#FEF2F2" stroke="#FECACA" stroke-width="1.5" filter="url(#shadow)"/>
+  <rect x="530" y="160" width="150" height="28" rx="8" fill="#DC2626"/>
+  <rect x="530" y="182" width="150" height="6" fill="#FEF2F2"/>
+  <text x="605" y="179" text-anchor="middle" fill="#fff" font-size="10" font-weight="600">Prometheus</text>
+  
+  <rect x="545" y="200" width="120" height="22" rx="4" fill="#fff" stroke="#FECACA" stroke-width="1"/>
+  <text x="605" y="215" text-anchor="middle" fill="#991B1B" font-size="9">prom/prometheus</text>
+  
+  <rect x="545" y="230" width="120" height="22" rx="4" fill="#FEE2E2" stroke="#FCA5A5" stroke-width="1"/>
+  <text x="605" y="245" text-anchor="middle" fill="#B91C1C" font-size="9">:9091 -> :9090</text>
+  
+  <!-- Grafana Container - Light Orange -->
+  <rect x="530" y="270" width="150" height="100" rx="8" fill="#FFF7ED" stroke="#FED7AA" stroke-width="1.5" filter="url(#shadow)"/>
+  <rect x="530" y="270" width="150" height="28" rx="8" fill="#EA580C"/>
+  <rect x="530" y="292" width="150" height="6" fill="#FFF7ED"/>
+  <text x="605" y="289" text-anchor="middle" fill="#fff" font-size="10" font-weight="600">Grafana</text>
+  
+  <rect x="545" y="310" width="120" height="22" rx="4" fill="#fff" stroke="#FED7AA" stroke-width="1"/>
+  <text x="605" y="325" text-anchor="middle" fill="#9A3412" font-size="9">grafana/grafana</text>
+  
+  <rect x="545" y="340" width="120" height="22" rx="4" fill="#FFEDD5" stroke="#FDBA74" stroke-width="1"/>
+  <text x="605" y="355" text-anchor="middle" fill="#C2410C" font-size="9">:3001 -> :3000</text>
+  
+  <!-- Network label - Light Emerald -->
+  <rect x="700" y="160" width="130" height="50" rx="6" fill="#ECFDF5" stroke="#A7F3D0" stroke-width="1"/>
+  <text x="765" y="180" text-anchor="middle" fill="#065F46" font-size="9" font-weight="500">Docker Network</text>
+  <text x="765" y="197" text-anchor="middle" fill="#047857" font-size="10" font-weight="600">Monitoring</text>
+  
+  <!-- Connection: MCP to Prometheus -->
+  <line x1="510" y1="205" x2="530" y2="205" stroke="#94A3B8" stroke-width="1" stroke-dasharray="3,2"/>
+  
+  <!-- Connection: Prometheus to Grafana -->
+  <line x1="605" y1="260" x2="605" y2="270" stroke="#94A3B8" stroke-width="1"/>
+  <polygon points="601,268 605,276 609,268" fill="#94A3B8"/>
+  
+  <!-- ==================== EXTERNAL SERVICES - Light Purple ==================== -->
+  <rect x="60" y="400" width="780" height="130" rx="8" fill="#FAF5FF" stroke="#E9D5FF" stroke-width="1.5" filter="url(#shadow)"/>
+  <rect x="60" y="400" width="180" height="28" rx="8" fill="#7C3AED"/>
+  <rect x="60" y="422" width="780" height="6" fill="#FAF5FF"/>
+  <text x="150" y="419" text-anchor="middle" fill="#fff" font-size="11" font-weight="600">External Services</text>
+  
+  <!-- Snowflake -->
+  <rect x="85" y="445" width="140" height="65" rx="6" fill="#fff" stroke="#E9D5FF" stroke-width="1"/>
+  <rect x="95" y="455" width="120" height="22" rx="4" fill="#0EA5E9"/>
+  <text x="155" y="470" text-anchor="middle" fill="#fff" font-size="9" font-weight="500">Snowflake</text>
+  <text x="155" y="495" text-anchor="middle" fill="#581C87" font-size="8">*.snowflakecomputing.com</text>
+  
+  <!-- Airflow -->
+  <rect x="245" y="445" width="140" height="65" rx="6" fill="#fff" stroke="#E9D5FF" stroke-width="1"/>
+  <rect x="255" y="455" width="120" height="22" rx="4" fill="#017CEE"/>
+  <text x="315" y="470" text-anchor="middle" fill="#fff" font-size="9" font-weight="500">Airflow</text>
+  <text x="315" y="495" text-anchor="middle" fill="#581C87" font-size="8">localhost:8080</text>
+  
+  <!-- Langfuse -->
+  <rect x="405" y="445" width="140" height="65" rx="6" fill="#fff" stroke="#E9D5FF" stroke-width="1"/>
+  <rect x="415" y="455" width="120" height="22" rx="4" fill="#DB2777"/>
+  <text x="475" y="470" text-anchor="middle" fill="#fff" font-size="9" font-weight="500">Langfuse Cloud</text>
+  <text x="475" y="495" text-anchor="middle" fill="#581C87" font-size="8">cloud.langfuse.com</text>
+  
+  <!-- dbt Manifests -->
+  <rect x="565" y="445" width="140" height="65" rx="6" fill="#fff" stroke="#E9D5FF" stroke-width="1"/>
+  <rect x="575" y="455" width="120" height="22" rx="4" fill="#F97316"/>
+  <text x="635" y="470" text-anchor="middle" fill="#fff" font-size="9" font-weight="500">dbt Manifests</text>
+  <text x="635" y="495" text-anchor="middle" fill="#581C87" font-size="8">./manifests/*.json</text>
+  
+  <!-- Environment -->
+  <rect x="725" y="445" width="100" height="65" rx="6" fill="#fff" stroke="#E9D5FF" stroke-width="1"/>
+  <rect x="735" y="455" width="80" height="22" rx="4" fill="#374151"/>
+  <text x="775" y="470" text-anchor="middle" fill="#fff" font-size="9" font-weight="500">.env</text>
+  <text x="775" y="495" text-anchor="middle" fill="#581C87" font-size="8">Credentials</text>
+  
+  <!-- Arrows from MCP to external services -->
+  <line x1="410" y1="360" x2="410" y2="385" stroke="#94A3B8" stroke-width="1"/>
+  <line x1="155" y1="385" x2="775" y2="385" stroke="#94A3B8" stroke-width="1"/>
+  <line x1="155" y1="385" x2="155" y2="400" stroke="#94A3B8" stroke-width="1"/>
+  <line x1="315" y1="385" x2="315" y2="400" stroke="#94A3B8" stroke-width="1"/>
+  <line x1="475" y1="385" x2="475" y2="400" stroke="#94A3B8" stroke-width="1"/>
+  <line x1="635" y1="385" x2="635" y2="400" stroke="#94A3B8" stroke-width="1"/>
+</svg>

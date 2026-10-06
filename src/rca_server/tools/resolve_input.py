@@ -4,9 +4,10 @@ import json
 
 from langfuse import observe
 
-from lineage_server.logger import get_logger
-from lineage_server.manifest_utils import (
+from rca_server.logger import get_logger
+from rca_server.manifest_utils import (
     MANIFESTS_BASE_PATH,
+    get_data_product_info,
     get_models_with_columns,
     list_data_products,
     load_slim_manifest,
@@ -111,8 +112,10 @@ async def resolve_input(
                 }
             validated_column = columns_lower[column_name.lower()]
 
-        # 4. Return success with validated values
+        # 4. Return success with validated values and product metadata
         logger.info(f"Successfully validated: data_product={data_product}, model={model_match}, column={validated_column}")
+
+        product_info = get_data_product_info(data_product)
 
         return {
             "success": True,
@@ -120,6 +123,8 @@ async def resolve_input(
             "model_id": model_id,
             "model_name": model_match,
             "column_name": validated_column,
+            "database_name": product_info.get("database_name") if product_info else None,
+            "airflow_dag_name": product_info.get("airflow_dag_name") if product_info else None,
             "message": f"Validation passed. Model '{model_match}' in '{data_product}'" +
                       (f" with column '{validated_column}'." if validated_column else "."),
         }

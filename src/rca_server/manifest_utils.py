@@ -4,7 +4,7 @@ import json
 import os
 from pathlib import Path
 
-from lineage_server.logger import get_logger
+from rca_server.logger import get_logger
 
 logger = get_logger("manifest_utils")
 
@@ -132,6 +132,28 @@ def load_slim_manifest(data_product: str) -> dict:
 def get_node(manifest: dict, node_id: str) -> dict | None:
     """Get a node from either nodes or sources."""
     return manifest['nodes'].get(node_id) or manifest['sources'].get(node_id)
+
+
+_DATA_PRODUCTS_CONFIG_FILE = "data_products.json"
+
+
+def load_data_product_config() -> dict:
+    """Load the data product mapping from data_products.json.
+
+    Returns a dict mapping each data product name to its corresponding
+    database name and Airflow DAG name.
+    """
+    config_path = MANIFESTS_BASE_PATH / _DATA_PRODUCTS_CONFIG_FILE
+    if not config_path.exists():
+        return {}
+    with open(config_path) as f:
+        return json.load(f)
+
+
+def get_data_product_info(data_product: str) -> dict | None:
+    """Get config for a single data product (database_name, airflow_dag_name)."""
+    config = load_data_product_config()
+    return config.get(data_product)
 
 
 def get_models_with_columns(manifest: dict) -> dict[str, dict]:

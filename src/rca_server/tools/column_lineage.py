@@ -6,14 +6,9 @@ import re
 from langfuse import observe
 from sqlglot import parse_one, exp
 
-from lineage_server.logger import get_logger
-from lineage_server.manifest_utils import (
-    get_node,
-    get_models_with_columns,
-    list_data_products,
-    load_slim_manifest,
-    _get_original_manifest_path,
-)
+from rca_server.logger import get_logger
+from rca_server.manifest_utils import get_node, load_slim_manifest
+from rca_server.tools.resolve_input import resolve_input
 
 logger = get_logger("column_lineage")
 
@@ -163,51 +158,14 @@ async def generate_column_lineage(
     logger.debug(f"generate_column_lineage called: data_product={data_product}, model_name={model_name}, column_name={column_name}")
     
     try:
-        manifest_path = _get_original_manifest_path(data_product)
-        
-        if not manifest_path.exists():
-            available_products = list_data_products()
-            logger.warning(f"Data product not found: {data_product}")
-            return {
-                "success": False,
-                "error": "Data product not found",
-                "message": f"Manifest not found for data product '{data_product}' at: {manifest_path}",
-                "available_data_products": available_products,
-            }
+        # Validate inputs via resolve_input (enforced server-side)
+        validation = await resolve_input(data_product, model_name, column_name)
+        if not validation["success"]:
+            return validation
 
+        model_id = validation["model_id"]
+        resolved_model_name = validation["model_name"]
         manifest = load_slim_manifest(data_product)
-
-        # Resolve model_name to model_id
-        models = get_models_with_columns(manifest)
-        model_match = None
-        resolved_model_name = None
-        for name, info in models.items():
-            if name.lower() == model_name.lower():
-                model_match = info
-                resolved_model_name = name
-                break
-
-        if not model_match:
-            logger.warning(f"Model not found: {model_name}")
-            return {
-                "success": False,
-                "error": "Model not found",
-                "message": f"Model '{model_name}' not found in data product '{data_product}'.",
-                "available_models": list(models.keys()),
-            }
-
-        model_id = model_match['model_id']
-        node = get_node(manifest, model_id)
-
-        columns = list(node.get('columns', {}).keys())
-        if column_name.lower() not in [c.lower() for c in columns]:
-            logger.warning(f"Column not found: {column_name} in model {resolved_model_name}")
-            return {
-                "success": False,
-                "error": "Column not found",
-                "message": f"Column '{column_name}' not found in model '{resolved_model_name}'.",
-                "available_columns": columns,
-            }
 
         lineage = []
         visited = set()

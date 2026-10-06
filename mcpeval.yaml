@@ -1,0 +1,34 @@
+# MCP Eval Configuration for dbt Lineage Server
+# Using OpenAI API
+
+provider: openai
+model: gpt-4o-mini
+
+mcp:
+  servers:
+    rca-server:
+      transport: streamable_http
+      url: "http://localhost:8000/mcp"  # HTTP Streamable endpoint
+
+agents:
+  definitions:
+    - name: default
+      instruction: |
+        You are testing a dbt lineage server. Use the available tools
+        to trace column and model lineage, validate SQL, and query data.
+        Always call resolve_input first to validate inputs before using
+        lineage or data tools.
+      server_names: ["rca-server"]
+
+execution:
+  timeout_seconds: 60
+
+reporting:
+  output_dir: eval-reports
+  formats: [json, html]
+
+# LLM judge also uses OpenAI
+judge:
+  provider: openai
+  model: gpt-4o-mini
+  min_score: 0.7

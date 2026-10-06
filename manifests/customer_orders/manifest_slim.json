@@ -47,14 +47,7 @@
           "source.customer_orders.snowflake_sample_data.customer"
         ]
       },
-      "refs": [],
-      "sources": [
-        [
-          "snowflake_sample_data",
-          "customer"
-        ]
-      ],
-      "raw_code": "-- Staging model for customer data\nwith source_cust as (\n    select \n        *\n    from {{ source('snowflake_sample_data','customer')}}\n\n)\nselect * from source_cust",
+      "description": "",
       "compiled_code": "-- Staging model for customer data\nwith source_cust as (\n    select \n        *\n    from snowflake_sample_data.tpch_sf1.customer\n\n)\nselect * from source_cust"
     },
     "model.customer_orders.order_base": {
@@ -108,14 +101,7 @@
           "source.customer_orders.snowflake_sample_data.orders"
         ]
       },
-      "refs": [],
-      "sources": [
-        [
-          "snowflake_sample_data",
-          "orders"
-        ]
-      ],
-      "raw_code": "-- Staging model for order  data\nwith source_orders as (\n    select \n        *\n    from {{ source('snowflake_sample_data','orders')}}\n\n)\nselect * from source_orders",
+      "description": "Staging model for orders data from TPC-H sample data",
       "compiled_code": "-- Staging model for order  data\nwith source_orders as (\n    select \n        *\n    from snowflake_sample_data.tpch_sf1.orders\n\n)\nselect * from source_orders"
     },
     "model.customer_orders.lineitem_base": {
@@ -197,14 +183,7 @@
           "source.customer_orders.snowflake_sample_data.lineitem"
         ]
       },
-      "refs": [],
-      "sources": [
-        [
-          "snowflake_sample_data",
-          "lineitem"
-        ]
-      ],
-      "raw_code": "-- Staging model for source_lineitem\nwith source_lineitem as (\n    select \n        *\n    from {{ source('snowflake_sample_data','lineitem')}}\n\n)\nselect * from source_lineitem",
+      "description": "Staging model for lineitem data from TPC-H sample data",
       "compiled_code": "-- Staging model for source_lineitem\nwith source_lineitem as (\n    select \n        *\n    from snowflake_sample_data.tpch_sf1.lineitem\n\n)\nselect * from source_lineitem"
     },
     "model.customer_orders.customer_orders_cy": {
@@ -354,15 +333,7 @@
           "model.customer_orders.int_customer_orders_cy"
         ]
       },
-      "refs": [
-        {
-          "name": "int_customer_orders_cy",
-          "package": null,
-          "version": null
-        }
-      ],
-      "sources": [],
-      "raw_code": "with customer_orders_cy as (\n    Select \n    *\n    from \n    {{ ref('int_customer_orders_cy') }}\n)\nselect * from customer_orders_cy",
+      "description": "Mart model joining customer, order, and lineitem data for the current year (1998)",
       "compiled_code": "with customer_orders_cy as (\n    Select \n    *\n    from \n    customer_orders.intermediate.int_customer_orders_cy\n)\nselect * from customer_orders_cy"
     },
     "model.customer_orders.int_customer_orders_cy": {
@@ -514,25 +485,7 @@
           "model.customer_orders.lineitem_base"
         ]
       },
-      "refs": [
-        {
-          "name": "order_base",
-          "package": null,
-          "version": null
-        },
-        {
-          "name": "customer_base",
-          "package": null,
-          "version": null
-        },
-        {
-          "name": "lineitem_base",
-          "package": null,
-          "version": null
-        }
-      ],
-      "sources": [],
-      "raw_code": "with customer_orders as (\n    Select \n    c_name,\n    o_orderkey,\n    o_orderdate,\n    o_totalprice,\n    o_orderstatus,\n    o_orderpriority,\n    o_clerk,\n    o_shippriority,\n    o_comment,\n    c_custkey,\n    c_address,\n    c_nationkey,\n    c_phone,\n    c_acctbal,\n    c_mktsegment,\n    c_comment,\n    l_orderkey,\n    l_partkey,\n    l_suppkey,\n    l_linenumber,\n    l_quantity,\n    l_extendedprice,\n    l_discount,\n    case when c_nationkey = 2 then 0 else l_tax end as l_tax,\n    l_returnflag,\n    l_linestatus,\n    l_shipdate,\n    l_commitdate,\n    l_receiptdate,\n    l_shipinstruct,\n    l_shipmode,\n    l_comment\n    from \n    {{ ref('order_base') }} o \n    left join {{ ref('customer_base') }} c on o.o_custkey = c.c_custkey\n    left join {{ ref('lineitem_base') }} l on o.o_orderkey = l.l_orderkey\n    where date_part(year,o_orderdate) = 1998\n)\nselect * from customer_orders",
+      "description": "Mart model joining customer, order, and lineitem data for the current year (1998)",
       "compiled_code": "with customer_orders as (\n    Select \n    c_name,\n    o_orderkey,\n    o_orderdate,\n    o_totalprice,\n    o_orderstatus,\n    o_orderpriority,\n    o_clerk,\n    o_shippriority,\n    o_comment,\n    c_custkey,\n    c_address,\n    c_nationkey,\n    c_phone,\n    c_acctbal,\n    c_mktsegment,\n    c_comment,\n    l_orderkey,\n    l_partkey,\n    l_suppkey,\n    l_linenumber,\n    l_quantity,\n    l_extendedprice,\n    l_discount,\n    case when c_nationkey = 2 then 0 else l_tax end as l_tax,\n    l_returnflag,\n    l_linestatus,\n    l_shipdate,\n    l_commitdate,\n    l_receiptdate,\n    l_shipinstruct,\n    l_shipmode,\n    l_comment\n    from \n    customer_orders.staging.order_base o \n    left join customer_orders.staging.customer_base c on o.o_custkey = c.c_custkey\n    left join customer_orders.staging.lineitem_base l on o.o_orderkey = l.l_orderkey\n    where date_part(year,o_orderdate) = 1998\n)\nselect * from customer_orders"
     },
     "model.customer_orders.customer_orders_py": {
@@ -682,15 +635,7 @@
           "model.customer_orders.int_customer_orders_py"
         ]
       },
-      "refs": [
-        {
-          "name": "int_customer_orders_py",
-          "package": null,
-          "version": null
-        }
-      ],
-      "sources": [],
-      "raw_code": "with customer_orders_py as (\n    Select \n    *\n    from \n    {{ ref('int_customer_orders_py') }}\n)\nselect * from customer_orders_py",
+      "description": "Mart model joining customer, order, and lineitem data for the current year (1998)",
       "compiled_code": "with customer_orders_py as (\n    Select \n    *\n    from \n    customer_orders.intermediate.int_customer_orders_py\n)\nselect * from customer_orders_py"
     },
     "model.customer_orders.int_customer_orders_py": {
@@ -844,25 +789,7 @@
           "model.customer_orders.lineitem_base"
         ]
       },
-      "refs": [
-        {
-          "name": "order_base",
-          "package": null,
-          "version": null
-        },
-        {
-          "name": "customer_base",
-          "package": null,
-          "version": null
-        },
-        {
-          "name": "lineitem_base",
-          "package": null,
-          "version": null
-        }
-      ],
-      "sources": [],
-      "raw_code": "with customer_orders as (\n    Select \n    c_name,\n    o_orderkey,\n    o_orderdate,\n    o_totalprice,\n    o_orderstatus,\n    o_orderpriority,\n    o_clerk,\n    o_shippriority,\n    o_comment,\n    c_custkey,\n    c_address,\n    c_nationkey,\n    c_phone,\n    c_acctbal,\n    c_mktsegment,\n    c_comment,\n    l_orderkey,\n    l_partkey,\n    l_suppkey,\n    l_linenumber,\n    l_quantity,\n    l_extendedprice,\n    l_discount,\n    {{ apply_tax('c_nationkey', 'l_tax') }} as l_tax,\n    l_returnflag,\n    l_linestatus,\n    l_shipdate,\n    l_commitdate,\n    l_receiptdate,\n    l_shipinstruct,\n    l_shipmode,\n    l_comment\n    from \n    {{ ref('order_base') }} o \n    left join {{ ref('customer_base') }} c on o.o_custkey = c.c_custkey\n    left join {{ ref('lineitem_base') }} l on o.o_orderkey = l.l_orderkey\n    where date_part(year,o_orderdate) < 1998\n)\nselect * from customer_orders",
+      "description": "Mart model joining customer, order, and lineitem data for the current year (1998)",
       "compiled_code": "with customer_orders as (\n    Select \n    c_name,\n    o_orderkey,\n    o_orderdate,\n    o_totalprice,\n    o_orderstatus,\n    o_orderpriority,\n    o_clerk,\n    o_shippriority,\n    o_comment,\n    c_custkey,\n    c_address,\n    c_nationkey,\n    c_phone,\n    c_acctbal,\n    c_mktsegment,\n    c_comment,\n    l_orderkey,\n    l_partkey,\n    l_suppkey,\n    l_linenumber,\n    l_quantity,\n    l_extendedprice,\n    l_discount,\n    \n    (\n        case \n            -- This runs in the database for every row\n            when c_nationkey = 2 then 0 \n            else l_tax\n        end\n    )\n as l_tax,\n    l_returnflag,\n    l_linestatus,\n    l_shipdate,\n    l_commitdate,\n    l_receiptdate,\n    l_shipinstruct,\n    l_shipmode,\n    l_comment\n    from \n    customer_orders.staging.order_base o \n    left join customer_orders.staging.customer_base c on o.o_custkey = c.c_custkey\n    left join customer_orders.staging.lineitem_base l on o.o_orderkey = l.l_orderkey\n    where date_part(year,o_orderdate) < 1998\n)\nselect * from customer_orders"
     }
   },
@@ -876,9 +803,7 @@
       "relation_name": "snowflake_sample_data.tpch_sf1.customer",
       "columns": {},
       "depends_on": null,
-      "refs": null,
-      "sources": null,
-      "raw_code": null,
+      "description": "",
       "compiled_code": null
     },
     "source.customer_orders.snowflake_sample_data.orders": {
@@ -890,9 +815,7 @@
       "relation_name": "snowflake_sample_data.tpch_sf1.orders",
       "columns": {},
       "depends_on": null,
-      "refs": null,
-      "sources": null,
-      "raw_code": null,
+      "description": "",
       "compiled_code": null
     },
     "source.customer_orders.snowflake_sample_data.lineitem": {
@@ -904,71 +827,8 @@
       "relation_name": "snowflake_sample_data.tpch_sf1.lineitem",
       "columns": {},
       "depends_on": null,
-      "refs": null,
-      "sources": null,
-      "raw_code": null,
+      "description": "",
       "compiled_code": null
     }
-  },
-  "parent_map": {
-    "model.customer_orders.customer_base": [
-      "source.customer_orders.snowflake_sample_data.customer"
-    ],
-    "model.customer_orders.order_base": [
-      "source.customer_orders.snowflake_sample_data.orders"
-    ],
-    "model.customer_orders.lineitem_base": [
-      "source.customer_orders.snowflake_sample_data.lineitem"
-    ],
-    "model.customer_orders.customer_orders_cy": [
-      "model.customer_orders.int_customer_orders_cy"
-    ],
-    "model.customer_orders.int_customer_orders_cy": [
-      "model.customer_orders.customer_base",
-      "model.customer_orders.lineitem_base",
-      "model.customer_orders.order_base"
-    ],
-    "model.customer_orders.customer_orders_py": [
-      "model.customer_orders.int_customer_orders_py"
-    ],
-    "model.customer_orders.int_customer_orders_py": [
-      "model.customer_orders.customer_base",
-      "model.customer_orders.lineitem_base",
-      "model.customer_orders.order_base"
-    ],
-    "source.customer_orders.snowflake_sample_data.customer": [],
-    "source.customer_orders.snowflake_sample_data.orders": [],
-    "source.customer_orders.snowflake_sample_data.lineitem": []
-  },
-  "child_map": {
-    "model.customer_orders.customer_base": [
-      "model.customer_orders.int_customer_orders_cy",
-      "model.customer_orders.int_customer_orders_py"
-    ],
-    "model.customer_orders.order_base": [
-      "model.customer_orders.int_customer_orders_cy",
-      "model.customer_orders.int_customer_orders_py"
-    ],
-    "model.customer_orders.lineitem_base": [
-      "model.customer_orders.int_customer_orders_cy",
-      "model.customer_orders.int_customer_orders_py"
-    ],
-    "model.customer_orders.customer_orders_cy": [],
-    "model.customer_orders.int_customer_orders_cy": [
-      "model.customer_orders.customer_orders_cy"
-    ],
-    "model.customer_orders.customer_orders_py": [],
-    "model.customer_orders.int_customer_orders_py": [
-      "model.customer_orders.customer_orders_py"
-    ],
-    "source.customer_orders.snowflake_sample_data.customer": [
-      "model.customer_orders.customer_base"
-    ],
-    "source.customer_orders.snowflake_sample_data.orders": [
-      "model.customer_orders.order_base"
-    ],
-    "source.customer_orders.snowflake_sample_data.lineitem": [
-      "model.customer_orders.lineitem_base"
-    ]
   }
 }

@@ -5,14 +5,14 @@ from pathlib import Path
 
 # Log directory and file paths (relative to project root)
 LOG_DIR = Path(__file__).parent.parent.parent / "logs"
-LOG_FILE = LOG_DIR / "lineage_server.log"
+LOG_FILE = LOG_DIR / "rca_server.log"
 
 # Log format
 LOG_FORMAT = "%(asctime)s %(levelname)-5s [%(name)s] %(message)s"
 DATE_FORMAT = "%Y-%m-%d %H:%M:%S"
 
 
-def setup_logger(name: str = "lineage_server") -> logging.Logger:
+def setup_logger(name: str = "rca_server") -> logging.Logger:
     """
     Set up and return a logger with file-based output.
 
@@ -42,10 +42,10 @@ def get_logger(name: str) -> logging.Logger:
     Get a child logger for a specific module.
 
     Args:
-        name: Module name (will be prefixed with 'lineage_server.').
+        name: Module name (will be prefixed with 'rca_server.').
 
     Returns:
         Logger instance for the module.
     """
     setup_logger()
-    return logging.getLogger(f"lineage_server.{name}")
+    return logging.getLogger(f"rca_server.{name}")

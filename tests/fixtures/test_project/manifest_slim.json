@@ -1,0 +1,76 @@
+{
+  "nodes": {
+    "model.test_project.mart_orders": {
+      "unique_id": "model.test_project.mart_orders",
+      "name": "mart_orders",
+      "resource_type": "model",
+      "database": "postgres",
+      "schema": "marts",
+      "relation_name": "\"postgres\".\"marts\".\"mart_orders\"",
+      "columns": {
+        "order_id": { "name": "order_id", "data_type": "integer" },
+        "customer_id": { "name": "customer_id", "data_type": "integer" },
+        "total_amount": { "name": "total_amount", "data_type": "numeric" }
+      },
+      "depends_on": {
+        "macros": [],
+        "nodes": ["model.test_project.stg_orders"]
+      },
+      "description": "Mart table for orders",
+      "compiled_code": "SELECT order_id, customer_id, amount AS total_amount FROM stg_orders"
+    },
+    "model.test_project.stg_orders": {
+      "unique_id": "model.test_project.stg_orders",
+      "name": "stg_orders",
+      "resource_type": "model",
+      "database": "postgres",
+      "schema": "staging",
+      "relation_name": "\"postgres\".\"staging\".\"stg_orders\"",
+      "columns": {
+        "order_id": { "name": "order_id", "data_type": "integer" },
+        "customer_id": { "name": "customer_id", "data_type": "integer" },
+        "amount": { "name": "amount", "data_type": "numeric" }
+      },
+      "depends_on": {
+        "macros": [],
+        "nodes": ["source.test_project.raw.orders"]
+      },
+      "description": "Staging table for orders",
+      "compiled_code": "SELECT order_id, customer_id, amount FROM raw.orders"
+    },
+    "model.test_project.standalone_model": {
+      "unique_id": "model.test_project.standalone_model",
+      "name": "standalone_model",
+      "resource_type": "model",
+      "database": "postgres",
+      "schema": "marts",
+      "relation_name": "\"postgres\".\"marts\".\"standalone_model\"",
+      "columns": {
+        "id": { "name": "id", "data_type": "integer" }
+      },
+      "depends_on": {
+        "macros": [],
+        "nodes": []
+      },
+      "description": "A model with no dependencies",
+      "compiled_code": "SELECT 1 AS id"
+    }
+  },
+  "sources": {
+    "source.test_project.raw.orders": {
+      "unique_id": "source.test_project.raw.orders",
+      "name": "orders",
+      "resource_type": "source",
+      "database": "postgres",
+      "schema": "raw",
+      "relation_name": "\"postgres\".\"raw\".\"orders\"",
+      "columns": {
+        "order_id": { "name": "order_id", "data_type": "integer" },
+        "customer_id": { "name": "customer_id", "data_type": "integer" },
+        "amount": { "name": "amount", "data_type": "numeric" }
+      },
+      "depends_on": null,
+      "description": "Raw orders source"
+    }
+  }
+}

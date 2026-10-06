@@ -4,7 +4,7 @@ from datetime import datetime, timezone
 
 from langfuse import observe
 
-from lineage_server.langfuse_connection_manager import get_langfuse_status
+from rca_server.langfuse_connection_manager import get_langfuse_status
 
 
 @observe()
@@ -22,7 +22,7 @@ async def ping() -> dict:
     status = get_langfuse_status()
     return {
         "success": True,
-        "message": "pong - lineage server is running",
+        "message": "pong - rca server is running",
         "timestamp": datetime.now(timezone.utc).isoformat(),
         "tracing": {
             "enabled": status["langfuse_available"],

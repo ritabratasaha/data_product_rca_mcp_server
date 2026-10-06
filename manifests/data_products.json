@@ -1,0 +1,6 @@
+{
+  "flight_analytics": {
+    "database_name": "FLIGHT_ANALYTICS",
+    "airflow_dag_name": "dbt_flight_information_daily"
+  }
+}

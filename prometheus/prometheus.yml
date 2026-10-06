@@ -3,8 +3,8 @@ global:
   evaluation_interval: 15s
 
 scrape_configs:
-  - job_name: 'lineage-server'
+  - job_name: 'rca-server'
     static_configs:
-      - targets: ['lineage-server:9090']
+      - targets: ['rca-server:9090']
     metrics_path: '/metrics'
     scrape_interval: 5s

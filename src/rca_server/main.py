@@ -15,8 +15,8 @@ def _setup_path():
 def main():
     """Start the MCP server."""
     _setup_path()
-    from lineage_server.logger import get_logger
-    from lineage_server.tools import mcp
+    from rca_server.logger import get_logger
+    from rca_server.tools import mcp
 
     logger = get_logger("main")
 

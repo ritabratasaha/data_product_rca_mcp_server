@@ -10,3 +10,6 @@ venv/
 .pytest_cache/
 .ruff_cache/
 logs/
+mcpeval.secrets.yaml
+test_script/
+eval-reports/

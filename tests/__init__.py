@@ -1,1 +1,1 @@
-"""Test suite for lineage-server MCP tools."""
+"""Test suite for rca-server MCP tools."""
