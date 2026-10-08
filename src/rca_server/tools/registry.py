@@ -91,8 +91,8 @@ else:
 
 mcp = FastMCP("rca-server", auth=auth)
 
-# Prometheus metrics instrumentation (skip if TESTING env var is set or observatory_sdk not installed)
-if not os.getenv("TESTING") and PROMETHEUS_AVAILABLE:
+# Prometheus metrics instrumentation (skip if TESTING mode or observatory_sdk not installed)
+if not TESTING_MODE and PROMETHEUS_AVAILABLE:
     prometheus_port = int(os.getenv("PROMETHEUS_PORT", "9090"))
     try:
         prometheus_instrument(mcp, service_name="rca-server", prometheus_port=prometheus_port)
