@@ -54,7 +54,7 @@ if TESTING_MODE:
     logger.info("TESTING mode enabled - authentication disabled")
 else:
     # Snowflake OAuth configuration
-    from rca_server.auth import SnowflakeProvider
+    from rca_server.auth import create_snowflake_auth
     
     SNOWFLAKE_ACCOUNT = os.getenv("SNOWFLAKE_ACCOUNT")
     SNOWFLAKE_OAUTH_CLIENT_ID = os.getenv("SNOWFLAKE_OAUTH_CLIENT_ID")
@@ -63,13 +63,14 @@ else:
     
     if SNOWFLAKE_ACCOUNT and SNOWFLAKE_OAUTH_CLIENT_ID and SNOWFLAKE_OAUTH_CLIENT_SECRET:
         # Build scopes from roles
+        # Snowflake unquoted identifiers are uppercase; match session:role:ROLE.
         role_scopes = [
-            f"session:role:{role.strip()}"
+            f"session:role:{role.strip().upper()}"
             for role in SNOWFLAKE_OAUTH_ROLES.split(",")
             if role.strip()
         ]
         
-        auth = SnowflakeProvider(
+        auth = create_snowflake_auth(
             account=SNOWFLAKE_ACCOUNT,
             client_id=SNOWFLAKE_OAUTH_CLIENT_ID,
             client_secret=SNOWFLAKE_OAUTH_CLIENT_SECRET,

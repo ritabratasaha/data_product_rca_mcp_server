@@ -17,7 +17,7 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = ["pytest>=8.0.0", "pytest-asyncio>=0.23.0"]
-eval = ["mcpevals>=0.1.0"]
+eval = ["mcpevals>=0.1.0", "mcp<2"]
 
 [project.scripts]
 rca-server = "rca_server.main:main"
