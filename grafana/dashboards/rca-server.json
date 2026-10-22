@@ -880,7 +880,7 @@
   },
   "timepicker": {},
   "timezone": "browser",
-  "title": "dbt Lineage MCP Server",
+  "title": "data-product-rca-server",
   "uid": "rca-server-dashboard",
   "version": 2,
   "weekStart": ""

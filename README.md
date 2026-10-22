@@ -4,36 +4,40 @@ A Model Context Protocol (MCP) server for dbt lineage analysis, SQL validation, 
 
 ## 🏗️ Architecture
 
-<p align="center">
-  <img src="docs/architecture.svg" alt="MCP RCA Server Solution Architecture" width="100%">
-</p>
+![MCP RCA Server Solution Architecture](docs/architecture.svg)
 
 ## 🚀 Deployment
 
-<p align="center">
-  <img src="docs/deployment.svg" alt="MCP RCA Server Deployment Diagram" width="100%">
-</p>
+![MCP RCA Server Deployment Diagram](docs/deployment.svg)
 
 ## 🛠️ MCP Tools
 
 The server provides **8 tools** and **1 prompt** for AI agents:
 
-| Tool | Description |
-|------|-------------|
-| 1. 🔍 **resolve_input** | **Call this first** for any lineage request. Validates `data_product`, `model_name`, and optional `column_name`. Returns available options if validation fails. |
-| 2. 📊 **generate_column_lineage** | Trace a column through upstream dbt models and sources. Returns compiled SQL, source columns, and derivation logic. |
-| 3. 🌳 **generate_model_lineage** | Trace upstream dependencies of a dbt model. Returns the full dependency tree with model metadata. |
-| 4. ✅ **validate_sql** | Validate SQL syntax and schema references against Snowflake without executing. Uses `EXPLAIN` to check compilation. |
-| 5. 🔌 **validate_db_connection** | Test if the Snowflake database is up and running. Returns server time if successful. |
-| 6. 📥 **get_data** | Execute a read-only SELECT query against Snowflake. Returns up to 10 rows. Rejects `SELECT *` queries. |
-| 7. ✈️ **get_airflow_dag_runs** | Get Airflow DAG run details for a specific date: run count, status, duration, and task logs. |
-| 8. 🏓 **ping** | Test if the MCP server is responding. Returns a simple success message. |
+
+| Tool                              | Description                                                                                                                                                     |
+| --------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1. 🔍 **resolve_input**           | **Call this first** for any lineage request. Validates `data_product`, `model_name`, and optional `column_name`. Returns available options if validation fails. |
+| 2. 📊 **generate_column_lineage** | Trace a column through upstream dbt models and sources. Returns compiled SQL, source columns, and derivation logic.                                             |
+| 3. 🌳 **generate_model_lineage**  | Trace upstream dependencies of a dbt model. Returns the full dependency tree with model metadata.                                                               |
+| 4. ✅ **validate_sql**             | Validate SQL syntax and schema references against Snowflake without executing. Uses `EXPLAIN` to check compilation.                                             |
+| 5. 🔌 **validate_db_connection**  | Test if the Snowflake database is up and running. Returns server time if successful.                                                                            |
+| 6. 📥 **get_data**                | Execute a read-only SELECT query against Snowflake. Returns up to 10 rows. Rejects `SELECT` * queries.                                                          |
+| 7. ✈️ **get_airflow_dag_runs**    | Get Airflow DAG run details for a specific date: run count, status, duration, and task logs.                                                                    |
+| 8. 🏓 **ping**                    | Test if the MCP server is responding. Returns a simple success message.                                                                                         |
+
+
+
 
 ### 📋 Prompts
 
-| Prompt | Description |
-|--------|-------------|
+
+| Prompt             | Description                                                        |
+| ------------------ | ------------------------------------------------------------------ |
 | `lineage_workflow` | Instructions for AI agents on how to use lineage tools effectively |
+
+
+
 
 ## ⚙️ Server Features
 
@@ -41,7 +45,7 @@ This MCP server is built with production-grade capabilities organized into six c
 
 ### 1️⃣ Authentication
 
-**Snowflake OAuth**
+**Snowflake OAuths**
 
 Custom OAuth provider that authenticates users via Snowflake's OAuth flow. Configured in `src/rca_server/auth/snowflake_provider.py`.
 
@@ -54,6 +58,8 @@ Middleware captures the OAuth access token and reuses it for Snowflake database 
 
 - Implemented via context variable in `src/rca_server/snowflake_connection.py`
 - Eliminates need for separate database credentials
+
+
 
 ### 2️⃣ Guardrails
 
@@ -75,6 +81,8 @@ The `get_data` tool automatically caps query results to a maximum of 10 rows to 
 - If no LIMIT specified: adds `LIMIT 10`
 - If LIMIT > 10: caps it to `LIMIT 10`
 
+
+
 ### 3️⃣ Middleware
 
 **Rate Limiting**
@@ -84,6 +92,9 @@ Built-in rate limiting using FastMCP's `RateLimitingMiddleware` to prevent abuse
 - Configurable via `RATE_LIMIT_RPS` (default: 10 requests/sec)
 - Burst capacity via `RATE_LIMIT_BURST` (default: 10)
 - Applied to all tool calls
+- Still needed if an API gateway already rate-limits: Cursor and other callers often hit MCP directly
+- Agentic loops: one session can chain or retry many `tools/call`s; the gateway only sees HTTP volume
+- Protects this process and Snowflake/Airflow when the gateway is absent or too loose
 
 **Request Logging**
 
@@ -93,15 +104,20 @@ Structured logging via custom logger module with multiple levels for debugging a
 - Configured in `src/rca_server/logger.py`
 - Includes request context and timing
 
+
+
 ### 4️⃣ Observability
 
 **Prometheus Metrics**
 
-Automatic instrumentation using `observatory_sdk` that wraps the FastMCP server.
+Pull-based metrics (this server does **not** remote-write). `observatory_sdk.instrument()` wraps FastMCP `mcp.tool` and serves `/metrics` on `PROMETHEUS_PORT` (default `9090`).
 
-- Tool call count, latency, and error metrics
-- Exposed on configurable port (default `:9090`)
-- Scrape-ready for Prometheus
+- Wired in `src/rca_server/tools/registry.py` **before** `register_tools()`, so every registered tool is instrumented
+- Tool call count, latency, inflight, and outcome (`success` / `error` / `timeout`)
+- Disabled when `TESTING=true`, `mcp-observatory-sdk` is missing, or the metrics port fails to bind
+- Compose: Prometheus scrapes `rca-server:9090/metrics` every 5s (`prometheus/prometheus.yml`); Grafana is pre-provisioned (`grafana/dashboards/rca-server.json`)
+- Host URLs: metrics `http://localhost:9090/metrics`, Prometheus UI `http://localhost:9091`, Grafana `http://localhost:3001` (admin/admin)
+- Metrics catalog and PromQL: [docs/prometheus.md](docs/prometheus.md)
 
 **Langfuse Tracing**
 
@@ -114,11 +130,15 @@ Distributed tracing using Langfuse with automatic user tracking from OAuth conte
 
 **Grafana Dashboards**
 
-Pre-configured dashboards for visualizing server metrics.
+Grafana 11 in Compose on the `monitoring` network. Grafana does not scrape rca-server; it queries Prometheus.
 
-- Auto-provisioned via Docker Compose
-- Located in `grafana/dashboards/`
-- Visualizes Prometheus metrics
+- Host `http://localhost:3001` (admin / `GF_SECURITY_ADMIN_PASSWORD`, default `admin`)
+- Datasource auto-provisioned: Prometheus at `http://prometheus:9090`, uid `prometheus` (`grafana/provisioning/datasources/datasources.yml`)
+- File provider loads `grafana/dashboards/rca-server.json` (title `data-product-rca-server`) every 30s
+- `depends_on: prometheus`; empty panels until rca-server is scraped and tools have been called
+- Setup and dashboard map: [docs/grafana.md](docs/grafana.md); PromQL: [docs/prometheus.md](docs/prometheus.md)
+
+
 
 ### 5️⃣ Testing & Quality
 
@@ -147,6 +167,7 @@ LLM-judged evaluation framework using `mcpeval` to test agent interactions.
 - Set `TESTING=true` to disable auth for local eval runs
 
 
+
 ### 6️⃣ Deployment
 
 **Docker Compose**
@@ -158,6 +179,8 @@ Production-ready container deployment with monitoring stack.
 - Volume mounts for manifests and dashboard persistence
 - Configured in `docker-compose.yml`
 
+
+
 ## 📦 Installation
 
 ```bash
@@ -165,9 +188,12 @@ pip install -e .
 ```
 
 For development:
+
 ```bash
 pip install -e ".[dev]"
 ```
+
+
 
 ## ▶️ Usage
 
@@ -178,10 +204,15 @@ rca-server
 ```
 
 The server starts on port 8000 by default with:
+
 - MCP endpoint: `http://localhost:8000`
 - Prometheus metrics: `http://localhost:9090/metrics`
 
+
+
 ## 🔧 Configuration
+
+
 
 ### Environment Variables
 
@@ -197,14 +228,20 @@ SNOWFLAKE_OAUTH_ROLES=PUBLIC,ANALYST_ROLE
 SERVER_BASE_URL=http://localhost:8000
 ```
 
+
+
 #### Airflow
+
 ```bash
 AIRFLOW_BASE_URL=http://localhost:8080
 AIRFLOW_USERNAME=airflow
 AIRFLOW_PASSWORD=airflow
 ```
 
+
+
 #### Observability (optional)
+
 ```bash
 PROMETHEUS_PORT=9090
 LANGFUSE_SECRET_KEY=your-secret-key
@@ -212,11 +249,16 @@ LANGFUSE_PUBLIC_KEY=your-public-key
 LANGFUSE_HOST=https://cloud.langfuse.com
 ```
 
+
+
 #### Rate Limiting
+
 ```bash
 RATE_LIMIT_RPS=10.0
 RATE_LIMIT_BURST=10
 ```
+
+
 
 ### Data Products
 
@@ -231,17 +273,21 @@ Configure data products in `manifests/data_products.json`:
 }
 ```
 
+
+
 #### dbt Manifest Files
 
 **Current Limitation**: In the current version, dbt manifest files are embedded directly in the MCP server repository. This means you must manually copy the manifest from each dbt data product repository to this repo.
 
 **Workflow**:
+
 1. After running `dbt compile` or `dbt build` in your dbt project, locate the generated `manifest.json` in the `target/` directory
 2. Copy it to this repository: `manifests/<data_product>/manifest.json`
 3. Run `python -c "from src.rca_server.manifest_utils import ensure_slim_manifest; ensure_slim_manifest('<data_product>')"` to generate the optimized slim manifest
 4. Rebuild the Docker container to include the updated manifest
 
 **Directory Structure**:
+
 ```
 manifests/
 ├── data_products.json
@@ -274,6 +320,8 @@ When running the server via Docker Compose:
 }
 ```
 
+
+
 ### Local Development
 
 When running `rca-server` directly (without Docker):
@@ -291,31 +339,32 @@ When running `rca-server` directly (without Docker):
 }
 ```
 
+
+
 ### Testing Without OAuth
 
 For local development and testing without Snowflake OAuth authentication:
 
-1. **Set `TESTING=true`** in your `.env` file:
-   ```bash
+1. **Set** `TESTING=true` in your `.env` file:
+  ```bash
    TESTING=true
-   ```
-
+  ```
 2. **Restart the container:**
-   ```bash
+  ```bash
    docker compose down rca-server
    docker compose up -d rca-server
-   ```
-
+  ```
 3. **Verify OAuth is disabled:**
-   ```bash
+  ```bash
    curl http://localhost:8000/mcp -X POST \
      -H "Content-Type: application/json" \
      -H "Accept: application/json, text/event-stream" \
      -d '{"jsonrpc":"2.0","method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"1.0"}},"id":1}'
-   ```
+  ```
    You should receive a successful response without 401 Unauthorized.
 
 > **Note:** When OAuth is enabled (`TESTING=false`), Cursor will prompt you to authenticate via Snowflake when you first use the MCP tools. The OAuth flow will redirect you to Snowflake's login page.
+
 
 
 ## 🐳 Docker
@@ -351,11 +400,15 @@ curl -s http://localhost:8000/mcp -X POST \
 
 **Services:**
 
-| Service | URL | Description |
-|---------|-----|-------------|
+
+| Service    | URL                         | Description                    |
+| ---------- | --------------------------- | ------------------------------ |
 | MCP Server | `http://localhost:8000/mcp` | MCP endpoint (Streamable HTTP) |
-| Prometheus | `http://localhost:9091` | Metrics scraping |
-| Grafana | `http://localhost:3001` | Dashboards (admin/admin) |
+| Prometheus | `http://localhost:9091`     | Metrics scraping               |
+| Grafana    | `http://localhost:3001`     | Dashboards (admin/admin)       |
+
+
+
 
 ## 📁 Project Structure
 
@@ -363,18 +416,41 @@ curl -s http://localhost:8000/mcp -X POST \
 ├── pyproject.toml
 ├── README.md
 ├── docker-compose.yml
+├── mcpeval.yaml
+├── .github/workflows/ci.yml
 ├── manifests/
 │   ├── data_products.json          # Data product configuration
 │   └── <data_product>/
 │       └── manifest.json           # dbt manifest
 ├── docs/
-│   └── architecture.svg            # Architecture diagram
+│   ├── architecture.svg
+│   ├── deployment.svg
+│   ├── prometheus.md               # Prometheus setup, metrics, PromQL
+│   ├── grafana.md                  # Grafana provisioning and dashboard map
+│   ├── snowflake_oauth_process.md
+│   ├── setup_snowflake_oauth.sql
+│   ├── ping.md
+│   ├── resolve_input.md
+│   ├── generate_column_lineage.md
+│   ├── generate_model_lineage.md
+│   ├── validate_sql.md
+│   ├── validate_db_connection.md
+│   ├── get_data.md
+│   └── get_airflow_dag_runs.md
+├── prometheus/
+│   └── prometheus.yml              # Scrape config for rca-server
 ├── grafana/
-│   ├── dashboards/                 # Grafana dashboard JSON
-│   └── provisioning/               # Auto-provisioning config
+│   ├── dashboards/
+│   │   └── rca-server.json         # data-product-rca-server dashboard
+│   └── provisioning/
+│       ├── datasources/datasources.yml
+│       └── dashboards/dashboards.yml
+├── tests/
+├── evals/
 └── src/
     └── rca_server/
         ├── main.py                 # Server entry point
+        ├── logger.py
         ├── manifest_utils.py       # dbt manifest parsing
         ├── snowflake_connection.py # Snowflake client
         ├── langfuse_connection_manager.py
@@ -383,7 +459,7 @@ curl -s http://localhost:8000/mcp -X POST \
         ├── prompts/
         │   └── lineage_workflow.py
         └── tools/
-            ├── registry.py         # Tool registration
+            ├── registry.py         # Tool registration + Prometheus instrument
             ├── ping.py
             ├── resolve_input.py
             ├── column_lineage.py
@@ -393,6 +469,8 @@ curl -s http://localhost:8000/mcp -X POST \
             ├── get_data.py
             └── get_airflow_dag_runs.py
 ```
+
+
 
 ## 🧪 Testing
 
@@ -420,10 +498,12 @@ mcpevals run evals/
 
 MCP evals require two separate authentication layers to be configured:
 
-| Layer | Purpose | Testing Mode Behavior |
-|-------|---------|----------------------|
-| **MCP Server Auth** | Controls who can call MCP tools | `TESTING=true` disables OAuth, allowing evals to call tools without authentication |
-| **Snowflake DB Auth** | Controls who can query Snowflake | Uses `TESTING_SNOWFLAKE_USER` credentials (PUBLIC role) for database operations |
+
+| Layer                 | Purpose                          | Testing Mode Behavior                                                              |
+| --------------------- | -------------------------------- | ---------------------------------------------------------------------------------- |
+| **MCP Server Auth**   | Controls who can call MCP tools  | `TESTING=true` disables OAuth, allowing evals to call tools without authentication |
+| **Snowflake DB Auth** | Controls who can query Snowflake | Uses `TESTING_SNOWFLAKE_USER` credentials (PUBLIC role) for database operations    |
+
 
 > **Why both?** The `TESTING=true` flag disables MCP server OAuth so the eval framework can invoke tools. The `TESTING_SNOWFLAKE_USER` provides minimal database access for SQL validation and data retrieval tests without exposing production data.
 
@@ -444,20 +524,22 @@ GRANT ROLE PUBLIC TO USER MCP_TESTING_USER;
 ```
 
 Then add to your `.env`:
+
 ```bash
 TESTING_SNOWFLAKE_USER=MCP_TESTING_USER
 TESTING_SNOWFLAKE_PASSWORD=TestingPassword123!
 ```
 
 **CI Integration:**
+
 - MCP evals run automatically in GitHub Actions after unit tests pass
 - CI fails if eval pass rate is below **85%**
 - Requires `OPENAI_API_KEY` secret configured in repository settings
 - Reports are uploaded as artifacts for review
 
-**Test CI Locally with `act`:**
+**Test CI Locally with** `act`**:**
 
-You can run GitHub Actions workflows locally using [`act`](https://github.com/nektos/act) before pushing:
+You can run GitHub Actions workflows locally using `[act](https://github.com/nektos/act)` before pushing:
 
 ```bash
 # Install act
@@ -471,6 +553,8 @@ act -j test --secret-file .env
 ```
 
 > **Note:** `act` runs workflows in Docker containers that mimic GitHub's runners, letting you debug CI issues without pushing commits.
+
+
 
 ## 📄 License
 
